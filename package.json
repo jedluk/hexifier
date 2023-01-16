@@ -34,6 +34,8 @@
     "vite": "^4.0.4"
   },
   "dependencies": {
+    "mapbox-gl": "^2.12.0",
+    "maplibre-gl": "^2.4.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-map-gl": "^7.0.21"
