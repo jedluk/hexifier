@@ -7,6 +7,11 @@ on:
     branches: [ "main" ]
   workflow_dispatch:
 
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
 env:
   APP_URL: https://jedluk.github.io/hexifier/
 
@@ -14,6 +19,9 @@ jobs:
   build-and-deploy:
     name: Build & deploy
     runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
 
     steps:
     - uses: actions/checkout@v2
@@ -30,8 +38,16 @@ jobs:
         sed -i 's|src="\/\{0,1\}\(.*\)"|src="'$APP_URL'\1"|g' index.html
         sed -i 's|href="\/\{0,1\}\(.*\)"|href="'$APP_URL'\1"|g' index.html
 
-    - name: Deploy
-      uses: peaceiris/actions-gh-pages@v3
+    - name: Setup Pages
+      uses: actions/configure-pages@v2
+
+    - name: Upload artifact
+      uses: actions/upload-pages-artifact@v1
       with:
-        github_token: ${{ secrets.GITHUB_TOKEN }}
-        publish_dir: ./dist
+        path: './dist'
+    
+    - name: Deploy to GitHub Pages
+      id: deployment
+      uses: actions/deploy-pages@v1
+
+
