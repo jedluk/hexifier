@@ -4,6 +4,10 @@ import maplibre from 'maplibre-gl'
 import DrawControl from './DrawControl'
 import { MapObject } from './types'
 
+const BASE_URL = import.meta.env.BASE_URL
+const MAP_STYLE_URL =
+  BASE_URL === '/' ? '/mapStyle.json' : [BASE_URL, 'mapStyle.json'].join('/')
+
 export default function App() {
   const [features, setFeatures] = useState<Record<string, object>>({})
 
@@ -33,7 +37,7 @@ export default function App() {
     <main style={{ position: 'relative' }}>
       <MapGL
         mapLib={maplibre}
-        mapStyle="/mapStyle.json"
+        mapStyle={MAP_STYLE_URL}
         minZoom={2}
         maxZoom={19}
       >
