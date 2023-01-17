@@ -6,6 +6,9 @@ on:
       - main
   workflow_dispatch:
 
+env:
+  APP_URL: https://jedluk.github.io/hexifier/
+
 jobs:
   build-and-deploy:
     name: Build & deploy
@@ -23,8 +26,8 @@ jobs:
       run: |
         yarn install --frozen-lockfile
         yarn build
-        sed -i 's/src="\(.*\)"/src="https:\/\/jedluk.github.io\/hexifier\1"/' index.html
-        sed -i 's/href="\(.*\)"/src="https:\/\/jedluk.github.io\/hexifier\/\1"/' index.html
+        sed -i 's|src="\/\{0,1\}\(.*\)"|src="'$APP_URL'\1"|g' index.html
+        sed -i 's|href="\/\{0,1\}\(.*\)"|href="'$APP_URL'\1"|g' index.html
 
     - name: Deploy
       uses: peaceiris/actions-gh-pages@v3
