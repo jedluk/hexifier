@@ -24,7 +24,7 @@ jobs:
         yarn install --frozen-lockfile
         yarn build
         sed -i 's/src="\(.*\)"/src="https:\/\/jedluk.github.io\/hexifier\1"/'
-        sed -i 's/href="\(.*\)"/src="https:\/\/jedluk.github.io\/hexifier\1"/'
+        sed -i 's/href="\(.*\)"/src="https:\/\/jedluk.github.io\/hexifier\/\1"/'
 
     - name: Deploy
       uses: peaceiris/actions-gh-pages@v3
