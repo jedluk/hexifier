@@ -1,2 +1,2 @@
 # Hexifier
-Web app for easy geojson <=> conversion H3 and more.
+Web app for easy geojson <=> H3 conversion and more.
