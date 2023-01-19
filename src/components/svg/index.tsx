@@ -1,5 +1,5 @@
-export { ReactComponent as Logo } from './area.svg'
-export { ReactComponent as Hexagon } from './hexagon_2d.svg'
+export { ReactComponent as Area } from './area.svg'
+export { ReactComponent as Logo } from './logo.svg'
 export { ReactComponent as Location } from './my_location.svg'
 export { ReactComponent as Layers } from './layers.svg'
 export { ReactComponent as Upload } from './upload.svg'
