@@ -3,10 +3,7 @@ import MapGL from 'react-map-gl'
 import maplibre from 'maplibre-gl'
 import DrawControl from './DrawControl'
 import { MapObject } from './types'
-
-const BASE_URL = import.meta.env.BASE_URL
-const MAP_STYLE_URL =
-  BASE_URL === '/' ? '/mapStyle.json' : [BASE_URL, 'mapStyle.json'].join('/')
+import { serveFromBase } from './lib/asset'
 
 export default function App() {
   const [features, setFeatures] = useState<Record<string, object>>({})
@@ -37,12 +34,12 @@ export default function App() {
     <main style={{ position: 'relative' }}>
       <MapGL
         mapLib={maplibre}
-        mapStyle={MAP_STYLE_URL}
+        mapStyle={serveFromBase('mapStyle.json')}
         minZoom={2}
         maxZoom={19}
       >
         <DrawControl
-          position="top-left"
+          position="top-right"
           displayControlsDefault={false}
           controls={{
             polygon: true,
