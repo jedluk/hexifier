@@ -1,44 +1,35 @@
-import React, { useCallback, useState } from 'react'
-import MapGL from 'react-map-gl'
+import React, { useCallback, useRef, useState } from 'react'
+import MapGL, { MapRef } from 'react-map-gl'
 import maplibre from 'maplibre-gl'
 import DrawControl from './DrawControl'
-import { MapObject } from './types'
 import { serveFromBase } from './lib/asset'
 import { Panel } from './Panel'
+import { useDrawnPolygons } from './hooks/useDrawnPolygons'
+import { Maybe, Polygon } from './types'
+import bbox from '@turf/bbox'
 
 export default function App() {
-  const [features, setFeatures] = useState<Record<string, object>>({})
+  const mapRef = useRef<Maybe<MapRef>>(null)
 
-  const onUpdate = useCallback((e: { features: MapObject[] }) => {
-    setFeatures((currFeatures) =>
-      e.features.reduce(
-        (acc, feature) => {
-          acc[feature.id] = feature
-          return acc
-        },
-        { ...currFeatures }
-      )
-    )
-  }, [])
+  const { features, onDelete, onUpdate } = useDrawnPolygons()
 
-  const onDelete = useCallback((e: { features: MapObject[] }) => {
-    setFeatures((currFeatures) => {
-      const newFeatures = { ...currFeatures }
-      for (const f of e.features) {
-        delete newFeatures[f.id]
-      }
-      return newFeatures
-    })
+  const handleZoomToPolygon = useCallback((polygon: Polygon) => {
+    mapRef.current?.fitBounds(bbox(polygon) as [number, number, number, number])
   }, [])
 
   return (
     <main className="relative w-full h-full">
-      <Panel />
+      <Panel
+        polygons={Object.values(features)}
+        onZoomToPolygon={handleZoomToPolygon}
+      />
       <MapGL
+        ref={mapRef}
         mapLib={maplibre}
         mapStyle={serveFromBase('mapStyle.json')}
         minZoom={2}
         maxZoom={19}
+        initialViewState={{ latitude: 50, longitude: 15, zoom: 4 }}
       >
         <DrawControl
           position="top-right"
