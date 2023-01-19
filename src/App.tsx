@@ -39,7 +39,7 @@ export default function App() {
         maxZoom={19}
       >
         <DrawControl
-          position="top-left"
+          position="top-right"
           displayControlsDefault={false}
           controls={{
             polygon: true,
