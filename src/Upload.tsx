@@ -3,9 +3,9 @@ import { Upload as UploadIcon } from './components/svg'
 
 export function Upload() {
   return (
-    <div className="h-20 border border-dashed border-gray-200 hover:border-gray-500 rounded-sm flex flex-col justify-center items-center cursor-pointer">
+    <div className="grow border border-dashed border-gray-300 hover:border-gray-500 rounded-sm flex flex-col justify-center items-center cursor-pointer">
       <UploadIcon />
-      <span>Upload geoJSON</span>
+      <span className="uppercase mt-1">Upload geoJSON</span>
     </div>
   )
 }
