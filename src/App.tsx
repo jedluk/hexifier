@@ -4,6 +4,7 @@ import maplibre from 'maplibre-gl'
 import DrawControl from './DrawControl'
 import { MapObject } from './types'
 import { serveFromBase } from './lib/asset'
+import { Panel } from './Panel'
 
 export default function App() {
   const [features, setFeatures] = useState<Record<string, object>>({})
@@ -31,7 +32,8 @@ export default function App() {
   }, [])
 
   return (
-    <main style={{ position: 'relative' }}>
+    <main className="relative w-full h-full">
+      <Panel />
       <MapGL
         mapLib={maplibre}
         mapStyle={serveFromBase('mapStyle.json')}

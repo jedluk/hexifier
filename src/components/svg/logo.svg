@@ -1,0 +1,18 @@
+<svg width="96" height="18" viewBox="0 0 96 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <text x="-0.5" y="17" style="fill:black;font: 24px sans-serif;">H</text>
+    <text x="16" y="17" style="fill:black;font: 24px sans-serif;">exifier</text>
+    <path
+        d="M7.25 2.01036C7.7141 1.74241 8.2859 1.74241 8.75 2.01036L12.8122 4.35566C13.2763 4.62361 13.5622 5.1188 13.5622 5.6547V10.3453C13.5622 10.8812 13.2763 11.3764 12.8122 11.6443L8.75 13.9896C8.2859 14.2576 7.7141 14.2576 7.25 13.9896L3.18782 11.6443C2.72372 11.3764 2.43782 10.8812 2.43782 10.3453V5.6547C2.43782 5.1188 2.72372 4.62361 3.18782 4.35566L7.25 2.01036Z"
+        fill="white" stroke="#46505A" opacity="0.8" transform=" translate(0,-10)">
+
+        <animateTransform attributeName="transform" attributeType="XML" type="translate" from="0 -10" to="0 10" dur="1s"
+            repeatCount="indefinite" />
+    </path>
+    <path
+        d="M7.25 2.01036C7.7141 1.74241 8.2859 1.74241 8.75 2.01036L12.8122 4.35566C13.2763 4.62361 13.5622 5.1188 13.5622 5.6547V10.3453C13.5622 10.8812 13.2763 11.3764 12.8122 11.6443L8.75 13.9896C8.2859 14.2576 7.7141 14.2576 7.25 13.9896L3.18782 11.6443C2.72372 11.3764 2.43782 10.8812 2.43782 10.3453V5.6547C2.43782 5.1188 2.72372 4.62361 3.18782 4.35566L7.25 2.01036Z"
+        fill="white" stroke="#46505A" opacity="0.8" transform="translate(0,10)">
+        <animateTransform attributeName="transform" attributeType="XML" type="translate" from="0 10" to="0 -10" dur="1s"
+            repeatCount="indefinite" />
+    </path>
+
+</svg>
