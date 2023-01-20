@@ -11,7 +11,7 @@
     },
     "layers": [
       {
-        "id": "raster-riles",
+        "id": "raster-tiles",
         "type": "raster",
         "source": "openmaptiles"
       }
