@@ -69,7 +69,7 @@ export function PolygonDetails(props: PolygonDetailsProps) {
 
   return (
     <Fragment>
-      <div className="flex mt-2 items-center">
+      <div className="[&:not(:first-child)]:mt-5 mb-2 flex items-center sticky top-0 bg-white">
         <button onClick={onSelect}>
           <Area width={40} height={40} />
         </button>
@@ -85,7 +85,7 @@ export function PolygonDetails(props: PolygonDetailsProps) {
       </div>
       <label
         htmlFor="hexSize"
-        className="block my-2 text-sm font-medium text-gray-900"
+        className="block text-sm font-medium text-gray-900"
       >
         Output hex size:
       </label>

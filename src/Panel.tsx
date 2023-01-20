@@ -29,20 +29,23 @@ export function Panel(props: PanelProps) {
         <div className="mt-auto" />
         <Upload />
       </RenderWhen>
+
       <RenderWhen condition={isNotEmpty(polygons)}>
-        {polygons.map((polygon, idx) => (
-          <PolygonDetails
-            key={polygon.id}
-            index={idx}
-            polygon={polygon}
-            onDraw={onSetHexCollection}
-            onDelete={() => {
-              onDeletePolygon(polygon)
-              onSetHexCollection(null)
-            }}
-            onSelect={onZoomToPolygon.bind(null, polygon)}
-          />
-        ))}
+        <div className="overflow-y-auto mt-5">
+          {polygons.map((polygon, idx) => (
+            <PolygonDetails
+              key={polygon.id}
+              index={idx}
+              polygon={polygon}
+              onDraw={onSetHexCollection}
+              onDelete={() => {
+                onDeletePolygon(polygon)
+                onSetHexCollection(null)
+              }}
+              onSelect={onZoomToPolygon.bind(null, polygon)}
+            />
+          ))}
+        </div>
       </RenderWhen>
     </div>
   )
