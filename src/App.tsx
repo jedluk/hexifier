@@ -46,7 +46,7 @@ export default function App() {
             polygon: true,
             trash: true
           }}
-          defaultMode="simple_select"
+          defaultMode="draw_polygon"
           idToRemove={idToRemove}
           onCreate={onUpdate}
           onUpdate={onUpdate}
