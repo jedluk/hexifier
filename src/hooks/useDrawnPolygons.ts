@@ -4,7 +4,7 @@ import { DrawnPolygon } from '../types'
 export function useDrawnPolygons() {
   const [features, setFeatures] = useState<Record<string, DrawnPolygon>>({})
 
-  const onUpdate = useCallback((event: { features: Polygon[] }) => {
+  const onUpdate = useCallback((event: { features: DrawnPolygon[] }) => {
     setFeatures((currFeatures) =>
       event.features.reduce(
         (acc, feature) => {
