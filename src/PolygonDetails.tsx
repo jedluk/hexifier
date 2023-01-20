@@ -21,13 +21,21 @@ interface PolygonDetailsProps {
 
 export function PolygonDetails(props: PolygonDetailsProps) {
   const [hexesCount, setHexesCount] = useState(-1)
-  const [hexSize, setHexSize] = useState(8)
+  const [hexSize, setHexSize] = useState(-1)
   const { index, polygon, onSelect, onDelete, onDraw } = props
 
   const polygonAreaSquareKm = useMemo(
     () => area(polygon) / 1_000_000,
     [polygon]
   )
+
+  const options = useMemo(() => {
+    return Object.keys(HEX_AREAS_SQUARE_KM).filter(
+      (hexSize) =>
+        polygonAreaSquareKm / HEX_AREAS_SQUARE_KM[Number(hexSize)] <
+        FEATURES_LIMIT
+    )
+  }, [polygonAreaSquareKm])
 
   const handleConvertToHexGeoJSON = useCallback(() => {
     const hexes = polygonToCells(polygon.geometry.coordinates, hexSize, true)
@@ -48,6 +56,11 @@ export function PolygonDetails(props: PolygonDetailsProps) {
 
     onDraw(hexGeoJSON)
   }, [polygon, hexSize])
+
+  useEffect(() => {
+    const defaultOption = Number(options[options.length - 3]) || 0
+    setHexSize(defaultOption)
+  }, [options])
 
   useEffect(() => {
     setHexesCount(-1)
@@ -84,17 +97,11 @@ export function PolygonDetails(props: PolygonDetailsProps) {
           onChange={(evt) => setHexSize(+evt.target.value)}
           className="grow bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-50 p-2.5"
         >
-          {Array.from(Array(16).keys())
-            .filter(
-              (hexSize) =>
-                polygonAreaSquareKm / HEX_AREAS_SQUARE_KM[hexSize] <
-                FEATURES_LIMIT
-            )
-            .map((key) => (
-              <option id={'' + key} value={key}>
-                {key} ({HEX_AREAS_SQUARE_KM[key]} km²)
-              </option>
-            ))}
+          {options.map((key) => (
+            <option key={key} value={key}>
+              {key} ({HEX_AREAS_SQUARE_KM[+key]} km²)
+            </option>
+          ))}
         </select>
         <Button
           text="Convert"
