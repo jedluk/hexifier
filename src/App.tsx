@@ -7,6 +7,7 @@ import { Panel } from './Panel'
 import { useDrawnPolygons } from './hooks/useDrawnPolygons'
 import { Maybe, Polygon } from './types'
 import bbox from '@turf/bbox'
+import { CENTER_OF_EUROPE } from './lib/constants'
 
 export default function App() {
   const mapRef = useRef<Maybe<MapRef>>(null)
@@ -37,7 +38,7 @@ export default function App() {
         mapStyle={serveFromBase('mapStyle.json')}
         minZoom={2}
         maxZoom={19}
-        initialViewState={{ latitude: 50, longitude: 15, zoom: 4 }}
+        initialViewState={CENTER_OF_EUROPE}
       >
         <NavigationControl showCompass position="top-right" />
         <DrawControl
