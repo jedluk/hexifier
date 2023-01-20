@@ -1,8 +1,8 @@
 import { useCallback, useState } from 'react'
-import { Polygon } from '../types'
+import { DrawnPolygon } from '../types'
 
 export function useDrawnPolygons() {
-  const [features, setFeatures] = useState<Record<string, Polygon>>({})
+  const [features, setFeatures] = useState<Record<string, DrawnPolygon>>({})
 
   const onUpdate = useCallback((event: { features: Polygon[] }) => {
     setFeatures((currFeatures) =>
@@ -16,7 +16,7 @@ export function useDrawnPolygons() {
     )
   }, [])
 
-  const onDelete = useCallback((event: { features: Polygon[] }) => {
+  const onDelete = useCallback((event: { features: DrawnPolygon[] }) => {
     const idsToRemove = event.features.map((f) => f.id)
     setFeatures((currFeatures) =>
       Object.fromEntries(
