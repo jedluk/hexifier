@@ -1,7 +1,7 @@
 import { useEffect, useRef } from 'react'
 import MapboxDraw from '@mapbox/mapbox-gl-draw'
 import { useControl } from 'react-map-gl'
-import { Polygon } from './types'
+import { DrawnPolygon } from './types'
 
 import type { MapRef, ControlPosition } from 'react-map-gl'
 import { isNotEmpty } from './lib'
@@ -9,9 +9,9 @@ import { isNotEmpty } from './lib'
 type DrawControlProps = ConstructorParameters<typeof MapboxDraw>[0] & {
   position?: ControlPosition
   idToRemove: string
-  onCreate?: (evt: { features: Polygon[] }) => void
-  onUpdate?: (evt: { features: Polygon[]; action: string }) => void
-  onDelete?: (evt: { features: Polygon[] }) => void
+  onCreate?: (evt: { features: DrawnPolygon[] }) => void
+  onUpdate?: (evt: { features: DrawnPolygon[]; action: string }) => void
+  onDelete?: (evt: { features: DrawnPolygon[] }) => void
 }
 
 export default function DrawControl(props: DrawControlProps) {

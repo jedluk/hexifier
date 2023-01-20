@@ -1,27 +1,81 @@
-import React, { Fragment } from 'react'
+import React, { Fragment, useMemo, useState } from 'react'
 import { Area } from './components/svg'
 
 import area from '@turf/area'
 import { Button } from './components/button/Button'
-import { Polygon } from './types'
+import { DrawnPolygon, HexCollection, Maybe } from './types'
+import { HEX_AREAS_SQUARE_KM } from './lib/constants'
+import { cellToBoundary, polygonToCells } from 'h3-js'
+import { useCallback, useEffect } from 'react'
+import { RenderWhen } from './components/render-when/RenderWhen'
+
+const FEATURES_LIMIT = 50_000
 
 interface PolygonDetailsProps {
   index: number
-  polygon: Polygon
+  polygon: DrawnPolygon
+  onDraw: (collection: Maybe<HexCollection>) => void
   onSelect: () => void
   onDelete: () => void
 }
 
 export function PolygonDetails(props: PolygonDetailsProps) {
-  const { index, polygon, onSelect, onDelete } = props
+  const [hexesCount, setHexesCount] = useState(-1)
+  const [hexSize, setHexSize] = useState(-1)
+  const { index, polygon, onSelect, onDelete, onDraw } = props
+
+  const polygonAreaSquareKm = useMemo(
+    () => area(polygon) / 1_000_000,
+    [polygon]
+  )
+
+  const options = useMemo(() => {
+    return Object.keys(HEX_AREAS_SQUARE_KM).filter(
+      (hexSize) =>
+        polygonAreaSquareKm / HEX_AREAS_SQUARE_KM[Number(hexSize)] <
+        FEATURES_LIMIT
+    )
+  }, [polygonAreaSquareKm])
+
+  const handleConvertToHexGeoJSON = useCallback(() => {
+    const hexes = polygonToCells(polygon.geometry.coordinates, hexSize, true)
+
+    setHexesCount(hexes.length)
+
+    const hexGeoJSON: HexCollection = {
+      type: 'FeatureCollection',
+      features: hexes.map((hex) => ({
+        geometry: {
+          type: 'Polygon',
+          coordinates: [cellToBoundary(hex, true)]
+        },
+        type: 'Feature',
+        properties: { hex }
+      }))
+    }
+
+    onDraw(hexGeoJSON)
+  }, [polygon, hexSize])
+
+  useEffect(() => {
+    const defaultOption = Number(options[options.length - 3]) || 0
+    setHexSize(defaultOption)
+  }, [options])
+
+  useEffect(() => {
+    setHexesCount(-1)
+    onDraw(null)
+  }, [hexSize])
 
   return (
     <Fragment>
-      <div className="flex mt-2 items-center">
+      <div className="[&:not(:first-child)]:mt-5 mb-2 flex items-center sticky top-0 bg-white">
         <button onClick={onSelect}>
           <Area width={40} height={40} />
         </button>
-        <span className="ml-1">Polygon {index + 1}</span>
+        <span className="mx-1">
+          Polygon {index + 1} ~ {polygonAreaSquareKm.toFixed(3)} km²
+        </span>
         <Button
           className="ml-auto"
           secondary
@@ -29,9 +83,39 @@ export function PolygonDetails(props: PolygonDetailsProps) {
           onClick={onDelete}
         />
       </div>
-      <div className="text-sm text-slate-900">
-        Area: {(area(polygon) / 1_000_000).toFixed(3)} km²
+      <label
+        htmlFor="hexSize"
+        className="block text-sm font-medium text-gray-900"
+      >
+        Output hex size:
+      </label>
+
+      <div className="flex align-center">
+        <select
+          value={hexSize}
+          id="hexSize"
+          onChange={(evt) => setHexSize(+evt.target.value)}
+          className="grow bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-50 p-2.5"
+        >
+          {options.map((key) => (
+            <option key={key} value={key}>
+              {key} ({HEX_AREAS_SQUARE_KM[+key]} km²)
+            </option>
+          ))}
+        </select>
+        <Button
+          text="Convert"
+          className="my-1 ml-2"
+          onClick={handleConvertToHexGeoJSON}
+        />
       </div>
+
+      <RenderWhen condition={hexesCount > -1}>
+        <div className="text-sm mt-2">
+          Polygon is covered by <strong>{hexesCount}</strong> hexes of size{' '}
+          <strong>{hexSize}</strong>
+        </div>
+      </RenderWhen>
     </Fragment>
   )
 }
