@@ -1,5 +1,5 @@
-import React, { useCallback, useRef, useState } from 'react'
-import MapGL, { MapRef } from 'react-map-gl'
+import React, { useCallback, useRef } from 'react'
+import MapGL, { MapRef, NavigationControl } from 'react-map-gl'
 import maplibre from 'maplibre-gl'
 import DrawControl from './DrawControl'
 import { serveFromBase } from './lib/asset'
@@ -25,14 +25,15 @@ export default function App() {
       />
       <MapGL
         ref={mapRef}
+        dragRotate={false}
         mapLib={maplibre}
         mapStyle={serveFromBase('mapStyle.json')}
         minZoom={2}
         maxZoom={19}
         initialViewState={{ latitude: 50, longitude: 15, zoom: 4 }}
       >
+        <NavigationControl showCompass position="top-right" />
         <DrawControl
-          position="top-right"
           displayControlsDefault={false}
           controls={{
             polygon: true,
