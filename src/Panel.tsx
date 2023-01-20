@@ -7,6 +7,7 @@ import { Upload } from './Upload'
 import { isNotEmpty } from './lib/index'
 
 import { PolygonDetails } from './PolygonDetails'
+import { Button } from './components/button/Button'
 
 interface PanelProps {
   polygons: Polygon[]
@@ -38,6 +39,7 @@ export function Panel(props: PanelProps) {
             onSelect={onZoomToPolygon.bind(null, polygon)}
           />
         ))}
+   
       </RenderWhen>
     </div>
   )
