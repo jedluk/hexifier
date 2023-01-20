@@ -5,21 +5,23 @@ import DrawControl from './DrawControl'
 import { serveFromBase } from './lib/asset'
 import { Panel } from './Panel'
 import { useDrawnPolygons } from './hooks/useDrawnPolygons'
-import { Maybe, Polygon } from './types'
+import { DrawnPolygon, Maybe, HexCollection } from './types'
 import bbox from '@turf/bbox'
 import { CENTER_OF_EUROPE } from './lib/constants'
+import { Hex } from './Hex'
 
 export default function App() {
   const mapRef = useRef<Maybe<MapRef>>(null)
 
   const [idToRemove, setIdToRemove] = useState('')
+  const [hexCollection, setHexCollection] = useState<Maybe<HexCollection>>(null)
   const { features, onDelete, onUpdate } = useDrawnPolygons()
 
-  const handleZoomToPolygon = useCallback((polygon: Polygon) => {
+  const handleZoomToPolygon = useCallback((polygon: DrawnPolygon) => {
     mapRef.current?.fitBounds(bbox(polygon) as [number, number, number, number])
   }, [])
 
-  const handleDeletePolygon = useCallback((polygon: Polygon) => {
+  const handleDeletePolygon = useCallback((polygon: DrawnPolygon) => {
     onDelete({ features: [polygon] })
     setIdToRemove(polygon.id)
   }, [])
@@ -28,6 +30,7 @@ export default function App() {
     <main className="relative w-full h-full">
       <Panel
         polygons={Object.values(features)}
+        onSetHexCollection={setHexCollection}
         onDeletePolygon={handleDeletePolygon}
         onZoomToPolygon={handleZoomToPolygon}
       />
@@ -53,6 +56,7 @@ export default function App() {
           onUpdate={onUpdate}
           onDelete={onDelete}
         />
+        <Hex collection={hexCollection} />
       </MapGL>
     </main>
   )

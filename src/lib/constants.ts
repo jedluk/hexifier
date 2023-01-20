@@ -8,7 +8,7 @@ export const CENTER_OF_EUROPE: Omit<ViewState, 'padding'> = {
   pitch: 0
 }
 
-export const HEX_AREAS: Record<number, number> = {
+export const HEX_AREAS_SQUARE_KM: Record<number, number> = {
   0: 4_357_449.416078381,
   1: 609_788.441794133,
   2: 86_801.780398997,

@@ -2,21 +2,21 @@ import React from 'react'
 import { RenderWhen } from './components/render-when/RenderWhen'
 import { Logo } from './components/svg'
 import { isEmpty } from './lib'
-import { Polygon } from './types'
+import { DrawnPolygon, HexCollection, Maybe } from './types'
 import { Upload } from './Upload'
 import { isNotEmpty } from './lib/index'
-
 import { PolygonDetails } from './PolygonDetails'
-import { Button } from './components/button/Button'
 
 interface PanelProps {
-  polygons: Polygon[]
-  onZoomToPolygon: (polygon: Polygon) => void
-  onDeletePolygon: (polygon: Polygon) => void
+  polygons: DrawnPolygon[]
+  onSetHexCollection: (collection: Maybe<HexCollection>) => void
+  onZoomToPolygon: (polygon: DrawnPolygon) => void
+  onDeletePolygon: (polygon: DrawnPolygon) => void
 }
 
 export function Panel(props: PanelProps) {
-  const { polygons, onZoomToPolygon, onDeletePolygon } = props
+  const { polygons, onZoomToPolygon, onDeletePolygon, onSetHexCollection } =
+    props
 
   return (
     <div className="absolute z-10 top-2 left-2 w-96 h-96 flex flex-col bg-white rounded-xl p-2 shadow-lg break-words">
@@ -33,13 +33,16 @@ export function Panel(props: PanelProps) {
         {polygons.map((polygon, idx) => (
           <PolygonDetails
             key={polygon.id}
-            polygon={polygon}
             index={idx}
-            onDelete={onDeletePolygon.bind(null, polygon)}
+            polygon={polygon}
+            onDraw={onSetHexCollection}
+            onDelete={() => {
+              onDeletePolygon(polygon)
+              onSetHexCollection(null)
+            }}
             onSelect={onZoomToPolygon.bind(null, polygon)}
           />
         ))}
-   
       </RenderWhen>
     </div>
   )
