@@ -1634,6 +1634,11 @@ update-browserslist-db@^1.0.9:
     escalade "^3.1.1"
     picocolors "^1.0.0"
 
+use-exportable-csv@^1.0.1:
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/use-exportable-csv/-/use-exportable-csv-1.0.1.tgz#517869f4cd743c78b048598a4aab2811ae039871"
+  integrity sha512-27hzy0s61tH/BMHp2uF6I8FpDP2VQ9DmKFEDrV8WBzLvPbnlTwe0mSre9YATvOtR+cOlbJUGWTxW6RejHa/hpg==
+
 util-deprecate@^1.0.2:
   version "1.0.2"
   resolved "https://registry.yarnpkg.com/util-deprecate/-/util-deprecate-1.0.2.tgz#450d4dc9fa70de732762fbd2d4a28981419a0ccf"
