@@ -8,8 +8,11 @@ import { HEX_AREAS_SQUARE_KM } from './lib/constants'
 import { cellToBoundary, polygonToCells } from 'h3-js'
 import { useCallback, useEffect } from 'react'
 import { RenderWhen } from './components/render-when/RenderWhen'
+import { useExportableCSV } from 'use-exportable-csv'
 
 const FEATURES_LIMIT = 50_000
+const NO_HEXES: [string][] = []
+
 
 interface PolygonDetailsProps {
   index: number
@@ -20,8 +23,9 @@ interface PolygonDetailsProps {
 }
 
 export function PolygonDetails(props: PolygonDetailsProps) {
-  const [hexesCount, setHexesCount] = useState(-1)
+  const [hexes, setHexes] = useState<[string][]>(NO_HEXES)
   const [hexSize, setHexSize] = useState(-1)
+
   const { index, polygon, onSelect, onDelete, onDraw } = props
 
   const polygonAreaSquareKm = useMemo(
@@ -40,7 +44,7 @@ export function PolygonDetails(props: PolygonDetailsProps) {
   const handleConvertToHexGeoJSON = useCallback(() => {
     const hexes = polygonToCells(polygon.geometry.coordinates, hexSize, true)
 
-    setHexesCount(hexes.length)
+    setHexes(hexes.map((hex) => [hex]))
 
     const hexGeoJSON: HexCollection = {
       type: 'FeatureCollection',
@@ -63,9 +67,14 @@ export function PolygonDetails(props: PolygonDetailsProps) {
   }, [options])
 
   useEffect(() => {
-    setHexesCount(-1)
+    setHexes(NO_HEXES)
     onDraw(null)
   }, [hexSize])
+
+  const link = useExportableCSV(hexes, {
+    bom: true,
+    headers: [`hex-${hexSize}`]
+  })
 
   return (
     <Fragment>
@@ -110,12 +119,16 @@ export function PolygonDetails(props: PolygonDetailsProps) {
         />
       </div>
 
-      <RenderWhen condition={hexesCount > -1}>
+      <RenderWhen condition={hexes !== NO_HEXES}>
         <div className="text-sm mt-2">
-          Polygon is covered by <strong>{hexesCount}</strong> hexes of size{' '}
+          Polygon is covered by <strong>{hexes?.length}</strong> hexes of size{' '}
           <strong>{hexSize}</strong>
         </div>
+          <a className="block text-center my-4 font-medium text-blue-600 dark:text-blue-500 hover:underline" href={link} download={`polygon-${index + 1}.csv`}>
+          CSV download
+        </a>
       </RenderWhen>
+
     </Fragment>
   )
 }
