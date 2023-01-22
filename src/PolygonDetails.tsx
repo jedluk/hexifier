@@ -3,13 +3,15 @@ import { Area } from './components/svg'
 
 import area from '@turf/area'
 import { Button } from './components/button/Button'
-import { DrawnPolygon, HexCollection, Maybe } from './types'
+import { DrawnPolygon, HexCollection, Maybe } from './@types'
 import { HEX_AREAS_SQUARE_KM } from './lib/constants'
 import { polygonToCells } from 'h3-js'
 import { useCallback, useEffect } from 'react'
 import { RenderWhen } from './components/render-when/RenderWhen'
 import { PolygonDownload } from './PolygonDownload'
 import { toGeoJSONCollection } from './lib/hexes'
+import { Splitter } from './components/splitter/Splitter'
+import { Shape } from './Shape'
 
 const FEATURES_LIMIT = 50_000
 const NO_HEXES: string[] = []
@@ -59,23 +61,27 @@ export function PolygonDetails(props: PolygonDetailsProps) {
 
   return (
     <Fragment>
-      <div className="[&:not(:first-child)]:mt-5 mb-2 flex items-center sticky top-0 bg-white">
-        <button onClick={onSelect}>
-          <Area width={40} height={40} />
-        </button>
-        <span className="mx-1">
-          Polygon {index + 1} ~ {polygonAreaSquareKm.toFixed(3)} km²
-        </span>
-        <Button
-          className="ml-auto"
-          secondary
-          text="remove"
-          onClick={onDelete}
-        />
+      <div
+        className="sticky z-10 bg-white [&:not(:first-child)]:mt-5 h-12 mb-2"
+        style={{ top: index * 48 }}
+      >
+        <div className="flex items-center h-full">
+          <button onClick={onSelect}>
+            <Area width={40} height={40} />
+          </button>
+          <span className="mx-1">Polygon {index + 1}</span>
+        </div>
       </div>
+
+      <Shape polygon={polygon} />
+
+      <div className="text-center text-sm mt-2">
+        <strong>~ {polygonAreaSquareKm.toFixed(3)} km²</strong>
+      </div>
+
       <label
         htmlFor="hexSize"
-        className="block text-sm font-medium text-gray-900"
+        className="block mt-4 text-sm font-medium text-gray-900"
       >
         Output hex size:
       </label>
@@ -93,9 +99,19 @@ export function PolygonDetails(props: PolygonDetailsProps) {
             </option>
           ))}
         </select>
+      </div>
+
+      <div className="my-2 flex justify-end">
+        <Button
+          className="ml-auto mr-2"
+          secondary
+          text="remove"
+          onClick={onDelete}
+        />
+
         <Button
           text="Convert"
-          className="my-1 ml-2"
+          className="mr-2"
           onClick={handleConvertToHexGeoJSON}
         />
       </div>
@@ -111,6 +127,8 @@ export function PolygonDetails(props: PolygonDetailsProps) {
           size={hexSize}
         />
       </RenderWhen>
+
+      <Splitter size="md" />
     </Fragment>
   )
 }

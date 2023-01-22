@@ -2,10 +2,11 @@ import React from 'react'
 import { RenderWhen } from './components/render-when/RenderWhen'
 import { Logo } from './components/svg'
 import { isEmpty } from './lib'
-import { DrawnPolygon, HexCollection, Maybe } from './types'
+import { DrawnPolygon, HexCollection, Maybe } from './@types'
 import { Upload } from './Upload'
 import { isNotEmpty } from './lib/index'
 import { PolygonDetails } from './PolygonDetails'
+import { Splitter } from './components/splitter/Splitter'
 
 interface PanelProps {
   polygons: DrawnPolygon[]
@@ -19,19 +20,24 @@ export function Panel(props: PanelProps) {
     props
 
   return (
-    <div className="absolute z-10 top-2 left-2 w-96 h-96 flex flex-col bg-white rounded-xl p-2 shadow-lg break-words">
+    <aside className="absolute top-0 left-0 z-10 border-r-2 border-neutral-200 h-full w-96 p-2 bg-white flex flex-col">
+      <h1>
       <Logo width={256} height={50} />
+      </h1>
+      <Splitter size="sm" className="my-1" />
+
       <RenderWhen condition={isEmpty(polygons)}>
-        <h2 className="my-5 font-bold text-center uppercase underline decoration-wavy decoration-orange-300">
-          draw polygon
-        </h2>
-        <h3 className="text-center my-2">or</h3>
-        <div className="mt-auto" />
-        <Upload />
+        <div className="grow mt-32 p-2">
+          <h1 className="my-5 font-bold text-center uppercase underline decoration-wavy decoration-orange-300">
+            draw polygon
+          </h1>
+          <h3 className="text-center my-2">or</h3>
+          <Upload />
+        </div>
       </RenderWhen>
 
       <RenderWhen condition={isNotEmpty(polygons)}>
-        <div className="overflow-y-auto mt-5">
+        <div className="grow overflow-y-auto mt-5">
           {polygons.map((polygon, idx) => (
             <PolygonDetails
               key={polygon.id}
@@ -47,6 +53,6 @@ export function Panel(props: PanelProps) {
           ))}
         </div>
       </RenderWhen>
-    </div>
+    </aside>
   )
 }

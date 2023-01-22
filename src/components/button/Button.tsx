@@ -18,7 +18,7 @@ export function Button(props: ButtonProps) {
   return (
     <button
       className={joinClassNames(
-        'w-fit rounded-lg p-1 hover:font-bold hover:scale-[1.1] ease-in-out duration-300',
+        'w-fit rounded-lg p-1 hover:font-bold ease-in-out duration-300',
         customClasses,
         props.className
       )}

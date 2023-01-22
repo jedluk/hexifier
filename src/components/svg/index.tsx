@@ -1,6 +1,5 @@
 export { ReactComponent as Area } from './area.svg'
 export { ReactComponent as Logo } from './logo.svg'
-export { ReactComponent as LogoSmall } from './logo_small.svg'
 export { ReactComponent as Location } from './my_location.svg'
 export { ReactComponent as Layers } from './layers.svg'
 export { ReactComponent as Upload } from './upload.svg'
