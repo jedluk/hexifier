@@ -8,6 +8,13 @@ export const CENTER_OF_EUROPE: Omit<ViewState, 'padding'> = {
   pitch: 0
 }
 
+export const MAP_PADDING = {
+  left: 384,
+  top: 10,
+  bottom: 10,
+  right: 10
+} as const
+
 export const HEX_AREAS_SQUARE_KM: Record<number, number> = {
   0: 4_357_449.416078381,
   1: 609_788.441794133,
