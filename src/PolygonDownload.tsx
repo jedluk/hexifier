@@ -11,14 +11,17 @@ interface PolygonDownloadProps {
 export function PolygonDownload(props: PolygonDownloadProps) {
   const { hexes, name, size } = props
 
-  const csvContent = useMemo(() => hexes.map((hex) => [hex]), [hexes])
+  const [csvContent, textContent] = useMemo(
+    () => [hexes.map((hex) => [hex]), hexes.join(',')],
+    [hexes]
+  )
 
   const csvLink = useExportableCSV(csvContent, {
     bom: true,
     headers: [`hex-${size}`]
   })
-  
-  const plainTextLink = useExportablePlainText(hexes.join(','))
+
+  const plainTextLink = useExportablePlainText(textContent)
 
   const linkClasses =
     'block text-center my-4 font-medium text-blue-600 dark:text-blue-500 hover:underline'
