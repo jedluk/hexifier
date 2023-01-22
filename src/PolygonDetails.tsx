@@ -62,7 +62,7 @@ export function PolygonDetails(props: PolygonDetailsProps) {
   return (
     <Fragment>
       <div
-        className="sticky z-10 bg-white [&:not(:first-child)]:mt-5 h-12 mb-2 "
+        className="sticky z-10 bg-white [&:not(:first-child)]:mt-5 h-12 mb-2"
         style={{ top: index * 48 }}
       >
         <div className="flex items-center">
@@ -71,7 +71,6 @@ export function PolygonDetails(props: PolygonDetailsProps) {
           </button>
           <span className="mx-1">Polygon {index + 1}</span>
         </div>
-        <Splitter size="sm" className='mt-1' />
       </div>
 
       <Shape polygon={polygon} />
