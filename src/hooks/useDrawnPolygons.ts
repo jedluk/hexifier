@@ -1,5 +1,5 @@
 import { useCallback, useState } from 'react'
-import { DrawnPolygon } from '../types'
+import { DrawnPolygon } from '../@types'
 
 export function useDrawnPolygons() {
   const [features, setFeatures] = useState<Record<string, DrawnPolygon>>({})

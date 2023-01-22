@@ -1,7 +1,7 @@
 import { useEffect, useRef } from 'react'
 import MapboxDraw from '@mapbox/mapbox-gl-draw'
 import { useControl } from 'react-map-gl'
-import { DrawnPolygon } from './types'
+import { DrawnPolygon } from './@types'
 
 import type { MapRef, ControlPosition } from 'react-map-gl'
 import { isNotEmpty } from './lib'

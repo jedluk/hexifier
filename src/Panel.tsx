@@ -2,7 +2,7 @@ import React from 'react'
 import { RenderWhen } from './components/render-when/RenderWhen'
 import { Logo } from './components/svg'
 import { isEmpty } from './lib'
-import { DrawnPolygon, HexCollection, Maybe } from './types'
+import { DrawnPolygon, HexCollection, Maybe } from './@types'
 import { Upload } from './Upload'
 import { isNotEmpty } from './lib/index'
 import { PolygonDetails } from './PolygonDetails'
@@ -22,8 +22,8 @@ export function Panel(props: PanelProps) {
   return (
     <aside className="absolute top-0 left-0 z-10 border-r-2 border-neutral-200 h-full w-96 p-2 bg-white flex flex-col">
       <Logo width={256} height={50} />
-      <Splitter size="sm" className='my-1' />
-      <div />
+      <Splitter size="sm" className="my-1" />
+
       <RenderWhen condition={isEmpty(polygons)}>
         <div className="grow mt-32 p-2">
           <h1 className="my-5 font-bold text-center uppercase underline decoration-wavy decoration-orange-300">

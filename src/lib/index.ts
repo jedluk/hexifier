@@ -1,4 +1,4 @@
-import { Maybe } from '../types'
+import { Maybe } from '../@types'
 
 export function defaultsTo<T, S>(
   value: Maybe<T> | undefined,

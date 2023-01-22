@@ -5,10 +5,11 @@ import DrawControl from './DrawControl'
 import { serveFromBase } from './lib/asset'
 import { Panel } from './Panel'
 import { useDrawnPolygons } from './hooks/useDrawnPolygons'
-import { DrawnPolygon, Maybe, HexCollection } from './types'
+import { DrawnPolygon, Maybe, HexCollection } from './@types'
 import bbox from '@turf/bbox'
 import { CENTER_OF_EUROPE, MAP_PADDING } from './lib/constants'
 import { Hex } from './Hex'
+import { Names } from './Names'
 
 export default function App() {
   const mapRef = useRef<Maybe<MapRef>>(null)
@@ -18,10 +19,7 @@ export default function App() {
   const { features, onDelete, onUpdate } = useDrawnPolygons()
 
   const handleZoomToPolygon = useCallback((polygon: DrawnPolygon) => {
-    mapRef.current?.fitBounds(
-      bbox(polygon) as [number, number, number, number],
-      { padding: MAP_PADDING }
-    )
+    mapRef.current?.fitBounds(bbox(polygon) as [number, number, number, number])
   }, [])
 
   const handleDeletePolygon = useCallback((polygon: DrawnPolygon) => {
@@ -29,10 +27,12 @@ export default function App() {
     setIdToRemove(polygon.id)
   }, [])
 
+  const polygons = Object.values(features)
+
   return (
     <Fragment>
       <Panel
-        polygons={Object.values(features)}
+        polygons={polygons}
         onSetHexCollection={setHexCollection}
         onDeletePolygon={handleDeletePolygon}
         onZoomToPolygon={handleZoomToPolygon}
@@ -41,11 +41,11 @@ export default function App() {
         <MapGL
           ref={mapRef}
           dragRotate={false}
-          padding={MAP_PADDING}
           mapLib={maplibre}
           mapStyle={serveFromBase('mapStyle.json')}
           minZoom={2}
           maxZoom={19}
+          padding={MAP_PADDING}
           initialViewState={CENTER_OF_EUROPE}
         >
           <NavigationControl showCompass position="top-right" />
@@ -62,6 +62,7 @@ export default function App() {
             onDelete={onDelete}
           />
           <Hex collection={hexCollection} />
+          <Names polygons={polygons} />
         </MapGL>
       </main>
     </Fragment>
