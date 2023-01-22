@@ -65,7 +65,7 @@ export function PolygonDetails(props: PolygonDetailsProps) {
         className="sticky z-10 bg-white [&:not(:first-child)]:mt-5 h-12 mb-2"
         style={{ top: index * 48 }}
       >
-        <div className="flex items-center">
+        <div className="flex items-center h-full">
           <button onClick={onSelect}>
             <Area width={40} height={40} />
           </button>
