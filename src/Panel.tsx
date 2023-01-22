@@ -21,7 +21,9 @@ export function Panel(props: PanelProps) {
 
   return (
     <aside className="absolute top-0 left-0 z-10 border-r-2 border-neutral-200 h-full w-96 p-2 bg-white flex flex-col">
+      <h1>
       <Logo width={256} height={50} />
+      </h1>
       <Splitter size="sm" className="my-1" />
 
       <RenderWhen condition={isEmpty(polygons)}>
