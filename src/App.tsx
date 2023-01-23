@@ -4,7 +4,7 @@ import React, { Fragment, useCallback, useRef, useState } from 'react'
 import MapGL, { MapRef, NavigationControl } from 'react-map-gl'
 
 import { DrawnPolygon, HexCollection, Maybe } from './@types'
-import DrawControl from './DrawControl'
+import { DrawControl } from './DrawControl'
 import { Hex } from './Hex'
 import { useDrawnPolygons } from './hooks/useDrawnPolygons'
 import { serveFromBase } from './lib/asset'
