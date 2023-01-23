@@ -60,7 +60,7 @@ export function isValidGeoJSON(file: File): Promise<GeoPolygon[]> {
       } else if (isPolygonCollection(content)) {
         resolve(content.features)
       } else {
-        reject('Not a valid GeoJSON structrue.')
+        reject('Not a valid GeoJSON or unsupported features included.')
       }
     }
 

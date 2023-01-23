@@ -35,7 +35,7 @@ export function DropFile(props: DropFileProps) {
           .then((result) => onFileUpload(result))
           .catch((err: string) => setErrorMessage(err))
       } else {
-        setErrorMessage('OnlySingle file upload supported!')
+        setErrorMessage('Only single (geo)JSON files are allowed.')
       }
     },
     [setDragInactive, onFileUpload]
@@ -64,14 +64,15 @@ export function DropFile(props: DropFileProps) {
 
   useEffect(() => {
     if (isNotNull(errorMessage)) {
-      setTimeout(() => setErrorMessage(''), 3_000)
+      setTimeout(() => setErrorMessage(null), 3_000)
     }
   }, [errorMessage])
 
   const classes = joinClassNames(
-    'h-32 group border border-dashed border-gray-300 hover:border-gray-500 rounded-sm flex flex-col justify-center items-center',
-    isDragActive ? ' border-teal-600 bg-teal-200' : '',
-    isNotNull(errorMessage) ? 'border-2 border-rose-600 bg-rose-200' : ''
+    'h-32 group border border-dashed border-gray-300 hover:border-gray-500 rounded-sm px-4 flex flex-col justify-center items-center',
+    isDragActive && ' border-teal-300 bg-teal-200',
+    isNotNull(errorMessage) &&
+      'text-center border-2 border-rose-300 bg-rose-200'
   )
 
   return (
@@ -89,11 +90,11 @@ export function DropFile(props: DropFileProps) {
       {isNotNull(errorMessage) ? <span>{errorMessage}</span> : props.children}
 
       <input
+        type="file"
         accept="application/json,.json,.geojson"
         className="hidden"
         onChange={onFileInputChange}
         ref={inputRef}
-        type="file"
       />
     </div>
   )

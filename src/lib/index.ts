@@ -43,6 +43,8 @@ export function isObject(x: unknown): x is object {
   return typeof x === 'object' && isNotNull(x)
 }
 
-export function joinClassNames(...classNames: (string | undefined)[]): string {
+export function joinClassNames(
+  ...classNames: (string | undefined | boolean)[]
+): string {
   return classNames.filter(Boolean).join(' ')
 }

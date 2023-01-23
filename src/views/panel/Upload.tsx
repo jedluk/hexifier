@@ -11,8 +11,8 @@ interface UploadProps {
 export function Upload(props: UploadProps) {
   return (
     <DropFile onFileUpload={props.onAddPolygons}>
-      <UploadIcon className="group-hover:block" />
-      <span className="uppercase mt-1 group-hover:hidden">Drop geoJSON</span>
+      <UploadIcon />
+      <span className="uppercase mt-1">Drop geoJSON with polygons</span>
     </DropFile>
   )
 }

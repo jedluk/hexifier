@@ -42,9 +42,9 @@ export function Selector(props: SelectorProps) {
         onChange={(evt) => onChange(Number(evt.target.value))}
         className="w-full bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-50 p-2.5"
       >
-        {options.map((key) => (
-          <option key={key} value={key}>
-            {key} ({formatNumber(HEX_AREAS_SQUARE_KM[Number(key)])} km²)
+        {options.map((hexSize) => (
+          <option key={hexSize} value={hexSize}>
+            {hexSize} ({formatNumber(HEX_AREA_SQUARE_KM[hexSize])} km²)
           </option>
         ))}
       </select>
