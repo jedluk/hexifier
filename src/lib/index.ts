@@ -31,6 +31,14 @@ export function isEmpty(value: ArrayLike<unknown>): boolean {
   return value.length === 0
 }
 
+export function isNumber(x: unknown): x is number {
+  return typeof x === 'number'
+}
+
+export function isObject(x: unknown): x is object {
+  return typeof x === 'object' && isNotNull(x)
+}
+
 export function joinClassNames(...classNames: (string | undefined)[]): string {
   return classNames.filter(Boolean).join(' ')
 }

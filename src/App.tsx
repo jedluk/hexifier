@@ -3,7 +3,7 @@ import maplibre from 'maplibre-gl'
 import React, { Fragment, useCallback, useRef, useState } from 'react'
 import MapGL, { MapRef, NavigationControl } from 'react-map-gl'
 
-import { DrawnPolygon, HexCollection, Maybe } from './@types'
+import { BBox, DrawnPolygon, GeoPolygon, HexCollection, Maybe } from './@types'
 import { useDrawnPolygons } from './hooks/useDrawnPolygons'
 import { serveFromBase } from './lib/asset'
 import { CENTER_OF_EUROPE, MAP_PADDING } from './lib/constants'
@@ -15,20 +15,30 @@ import { Panel } from './views/panel/Panel'
 export function App() {
   const mapRef = useRef<Maybe<MapRef>>(null)
 
-  const [idToRemove, setIdToRemove] = useState('')
   const [hexCollection, setHexCollection] = useState<Maybe<HexCollection>>(null)
-  const { features, onDelete, onUpdate } = useDrawnPolygons()
 
-  const handleZoomToPolygon = useCallback((polygon: DrawnPolygon) => {
-    mapRef.current?.fitBounds(bbox(polygon) as [number, number, number, number])
-  }, [])
+  const {
+    draw,
+    features,
+    onMapDelete,
+    onMapUpdate,
+    onPopulate,
+    onHarshDelete
+  } = useDrawnPolygons()
 
-  const handleDeletePolygon = useCallback(
-    (polygon: DrawnPolygon) => {
-      onDelete({ features: [polygon] })
-      setIdToRemove(polygon.id)
+  const handleZoomToPolygon = useCallback(
+    (polygon: DrawnPolygon | GeoPolygon) => {
+      mapRef.current?.fitBounds(bbox(polygon) as BBox)
     },
-    [onDelete]
+    []
+  )
+
+  const handleAddPolygons = useCallback(
+    (polygons: GeoPolygon[]) => {
+      onPopulate(polygons)
+      handleZoomToPolygon(polygons[0])
+    },
+    [onPopulate, handleZoomToPolygon]
   )
 
   const polygons = Object.values(features)
@@ -38,7 +48,8 @@ export function App() {
       <Panel
         polygons={polygons}
         onSetHexCollection={setHexCollection}
-        onDeletePolygon={handleDeletePolygon}
+        onDeletePolygon={onHarshDelete}
+        onAddPolygons={handleAddPolygons}
         onZoomToPolygon={handleZoomToPolygon}
       />
       <main className="relative w-full h-full">
@@ -54,16 +65,10 @@ export function App() {
         >
           <NavigationControl showCompass position="top-right" />
           <DrawControl
-            displayControlsDefault={false}
-            controls={{
-              polygon: true,
-              trash: true
-            }}
-            defaultMode="draw_polygon"
-            idToRemove={idToRemove}
-            onCreate={onUpdate}
-            onUpdate={onUpdate}
-            onDelete={onDelete}
+            draw={draw}
+            onCreate={onMapUpdate}
+            onUpdate={onMapUpdate}
+            onDelete={onMapDelete}
           />
           <Hex collection={hexCollection} />
           <Names polygons={polygons} />

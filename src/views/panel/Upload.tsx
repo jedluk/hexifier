@@ -1,23 +1,18 @@
-import React, { useEffect, useState } from 'react'
+import React from 'react'
 
-import { Maybe } from '../../@types'
+import { GeoPolygon } from '../../@types'
 import { Upload as UploadIcon } from '../../components/svg'
-import { isNotNull } from '../../lib'
 import { DropFile } from './DropFile'
 
-export function Upload() {
-  const [file, setFile] = useState<Maybe<File>>(null)
+interface UploadProps {
+  onAddPolygons: (polygons: GeoPolygon[]) => void
+}
 
-  useEffect(() => {
-    if (isNotNull(file)) {
-      console.log('file uploaded...')
-    }
-  }, [file])
-
+export function Upload(props: UploadProps) {
   return (
-    <DropFile onFileSelect={setFile}>
+    <DropFile onFileUpload={props.onAddPolygons}>
       <UploadIcon className="group-hover:block" />
-      <span className="uppercase mt-1">Drop geoJSON</span>
+      <span className="uppercase mt-1 group-hover:hidden">Drop geoJSON</span>
     </DropFile>
   )
 }

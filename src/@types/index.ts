@@ -1,5 +1,9 @@
 export type Maybe<T> = T | null
 
+export type JSObject = Record<string, unknown>
+
+export type BBox = [number, number, number, number]
+
 export interface Point {
   type: 'Point'
   coordinates: [number, number]
@@ -34,12 +38,20 @@ export type FeatureCollection<
 
 export type HexCollection = FeatureCollection<Polygon, { hex: string }>
 
-export interface DrawnPolygon {
-  id: string
+export interface GeoPolygon {
   geometry: {
     type: 'Polygon'
     coordinates: [number, number][][]
   }
   properties: Record<string, unknown>
   type: 'Feature'
+}
+
+export type GeoPolygonCollection = FeatureCollection<
+  Polygon,
+  Record<string, unknown>
+>
+
+export interface DrawnPolygon extends GeoPolygon {
+  id: string
 }

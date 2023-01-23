@@ -1,6 +1,6 @@
 import React from 'react'
 
-import { DrawnPolygon, HexCollection, Maybe } from '../../@types'
+import { DrawnPolygon, GeoPolygon, HexCollection, Maybe } from '../../@types'
 import { RenderWhen } from '../../components/render-when/RenderWhen'
 import { Splitter } from '../../components/splitter/Splitter'
 import { Logo } from '../../components/svg'
@@ -10,14 +10,20 @@ import { Upload } from './Upload'
 
 interface PanelProps {
   polygons: DrawnPolygon[]
+  onAddPolygons: (polygons: GeoPolygon[]) => void
   onSetHexCollection: (collection: Maybe<HexCollection>) => void
   onZoomToPolygon: (polygon: DrawnPolygon) => void
   onDeletePolygon: (polygon: DrawnPolygon) => void
 }
 
 export function Panel(props: PanelProps) {
-  const { polygons, onZoomToPolygon, onDeletePolygon, onSetHexCollection } =
-    props
+  const {
+    polygons,
+    onAddPolygons,
+    onZoomToPolygon,
+    onDeletePolygon,
+    onSetHexCollection
+  } = props
 
   return (
     <aside className="absolute top-0 left-0 z-10 border-r-2 border-neutral-200 h-full w-96 p-2 bg-white flex flex-col">
@@ -32,7 +38,7 @@ export function Panel(props: PanelProps) {
             draw polygon
           </h1>
           <h3 className="text-center my-2">or</h3>
-          <Upload />
+          <Upload onAddPolygons={onAddPolygons} />
         </div>
       </RenderWhen>
 

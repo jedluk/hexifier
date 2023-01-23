@@ -1,17 +1,28 @@
-import { useCallback, useState } from 'react'
+import MapboxDraw from '@mapbox/mapbox-gl-draw'
+import { useCallback, useRef, useState } from 'react'
 
-import { DrawnPolygon } from '../@types'
+import { DrawnPolygon, GeoPolygon } from '../@types'
 
 interface DrawnPolygons {
   features: Record<string, DrawnPolygon>
-  onDelete: (event: { features: DrawnPolygon[] }) => void
-  onUpdate: (event: { features: DrawnPolygon[] }) => void
+  draw: React.MutableRefObject<MapboxDraw>
+  onMapDelete: (event: { features: DrawnPolygon[] }) => void
+  onMapUpdate: (event: { features: DrawnPolygon[] }) => void
+  onPopulate: (polygons: GeoPolygon[]) => void
+  onHarshDelete: (polygon: DrawnPolygon) => void
 }
 
 export function useDrawnPolygons(): DrawnPolygons {
   const [features, setFeatures] = useState<Record<string, DrawnPolygon>>({})
+  const draw = useRef<MapboxDraw>(
+    new MapboxDraw({
+      controls: { polygon: true, trash: true },
+      defaultMode: 'draw_polygon',
+      displayControlsDefault: false
+    })
+  )
 
-  const onUpdate = useCallback((event: { features: DrawnPolygon[] }) => {
+  const onMapUpdate = useCallback((event: { features: DrawnPolygon[] }) => {
     setFeatures((currFeatures) =>
       event.features.reduce(
         (acc, feature) => {
@@ -23,7 +34,7 @@ export function useDrawnPolygons(): DrawnPolygons {
     )
   }, [])
 
-  const onDelete = useCallback((event: { features: DrawnPolygon[] }) => {
+  const onMapDelete = useCallback((event: { features: DrawnPolygon[] }) => {
     const idsToRemove = event.features.map((f) => f.id)
     setFeatures((currFeatures) =>
       Object.fromEntries(
@@ -32,5 +43,28 @@ export function useDrawnPolygons(): DrawnPolygons {
     )
   }, [])
 
-  return { features, onDelete, onUpdate }
+  const onHarshDelete = useCallback(
+    (polygon: DrawnPolygon) => {
+      onMapDelete({ features: [polygon] })
+      draw.current.delete(polygon.id)
+    },
+    [onMapDelete]
+  )
+
+  const onPopulate = useCallback((polygons: GeoPolygon[]) => {
+    const features = polygons.map((polygon) => ({
+      ...polygon,
+      id: String(Date.now())
+    }))
+
+    draw.current.add({
+      features: features,
+      type: 'FeatureCollection'
+    })
+    setFeatures(
+      Object.fromEntries(features.map((polygon) => [polygon.id, polygon]))
+    )
+  }, [])
+
+  return { draw, features, onHarshDelete, onMapDelete, onMapUpdate, onPopulate }
 }
