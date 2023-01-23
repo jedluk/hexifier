@@ -33,3 +33,8 @@ export const HEX_AREAS_SQUARE_KM: Record<number, number> = {
   8: 0.737327598,
   9: 0.105332513
 }
+
+export const KEYBOARD_KEYS = {
+  enter: 'Enter',
+  space: ' '
+}

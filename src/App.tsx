@@ -4,13 +4,13 @@ import React, { Fragment, useCallback, useRef, useState } from 'react'
 import MapGL, { MapRef, NavigationControl } from 'react-map-gl'
 
 import { DrawnPolygon, HexCollection, Maybe } from './@types'
-import { DrawControl } from './DrawControl'
-import { Hex } from './Hex'
 import { useDrawnPolygons } from './hooks/useDrawnPolygons'
 import { serveFromBase } from './lib/asset'
 import { CENTER_OF_EUROPE, MAP_PADDING } from './lib/constants'
-import { Names } from './Names'
-import { Panel } from './Panel'
+import { DrawControl } from './views/map/DrawControl'
+import { Hex } from './views/map/Hex'
+import { Names } from './views/map/Names'
+import { Panel } from './views/panel/Panel'
 
 export function App() {
   const mapRef = useRef<Maybe<MapRef>>(null)

@@ -3,8 +3,8 @@ import { useEffect, useRef } from 'react'
 import type { ControlPosition, MapRef } from 'react-map-gl'
 import { useControl } from 'react-map-gl'
 
-import { DrawnPolygon } from './@types'
-import { isNotEmpty } from './lib'
+import { DrawnPolygon } from '../../@types'
+import { isNotEmpty } from '../../lib'
 
 type DrawControlProps = ConstructorParameters<typeof MapboxDraw>[0] & {
   position?: ControlPosition

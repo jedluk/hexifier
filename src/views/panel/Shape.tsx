@@ -3,7 +3,7 @@
 import geojson2svg from 'geojson-to-svg'
 import React, { useMemo } from 'react'
 
-import { DrawnPolygon } from './@types'
+import { DrawnPolygon } from '../../@types'
 
 interface ShapeProps {
   polygon: DrawnPolygon
