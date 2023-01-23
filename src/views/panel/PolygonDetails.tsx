@@ -14,6 +14,7 @@ import { RenderWhen } from '../../components/render-when/RenderWhen'
 import { Splitter } from '../../components/splitter/Splitter'
 import { Area } from '../../components/svg'
 import { HEX_AREAS_SQUARE_KM } from '../../lib/constants'
+import { formatNumber } from '../../lib/formatter'
 import { toGeoJSONCollection } from '../../lib/hexes'
 import { PolygonDownload } from './PolygonDownload'
 import { Shape } from './Shape'
@@ -35,7 +36,7 @@ export function PolygonDetails(props: PolygonDetailsProps) {
 
   const { index, polygon, onSelect, onDelete, onDraw } = props
 
-  const polygonAreaSquareKm = useMemo(
+  const polygonAreaInSquareKm = useMemo(
     () => area(polygon) / 1_000_000,
     [polygon]
   )
@@ -43,10 +44,10 @@ export function PolygonDetails(props: PolygonDetailsProps) {
   const options = useMemo(() => {
     return Object.keys(HEX_AREAS_SQUARE_KM).filter(
       (hexSize) =>
-        polygonAreaSquareKm / HEX_AREAS_SQUARE_KM[Number(hexSize)] <
+        polygonAreaInSquareKm / HEX_AREAS_SQUARE_KM[Number(hexSize)] <
         FEATURES_LIMIT
     )
-  }, [polygonAreaSquareKm])
+  }, [polygonAreaInSquareKm])
 
   const handleConvertToHexGeoJSON = useCallback(() => {
     const hexes = polygonToCells(polygon.geometry.coordinates, hexSize, true)
@@ -81,7 +82,7 @@ export function PolygonDetails(props: PolygonDetailsProps) {
       <Shape polygon={polygon} />
 
       <div className="text-center text-sm mt-2">
-        <strong>~ {polygonAreaSquareKm.toFixed(3)} km²</strong>
+        <strong>~ {formatNumber(polygonAreaInSquareKm)} km²</strong>
       </div>
 
       <label
@@ -100,7 +101,7 @@ export function PolygonDetails(props: PolygonDetailsProps) {
         >
           {options.map((key) => (
             <option key={key} value={key}>
-              {key} ({HEX_AREAS_SQUARE_KM[Number(key)]} km²)
+              {key} ({formatNumber(HEX_AREAS_SQUARE_KM[Number(key)])} km²)
             </option>
           ))}
         </select>

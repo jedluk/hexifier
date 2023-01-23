@@ -14,3 +14,5 @@ export function Blob(blobParts?: BlobPart[], options?: BlobPropertyBag): Blob {
 export function setTimeout(handler: Function, timeout: number): void {
   window.setTimeout(handler, timeout)
 }
+
+export const locale = window.navigator.language
