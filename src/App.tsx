@@ -4,7 +4,7 @@ import React, { Fragment, useCallback, useRef, useState } from 'react'
 import MapGL, { MapRef, NavigationControl } from 'react-map-gl'
 
 import { BBox, DrawnPolygon, GeoPolygon, HexCollection, Maybe } from './@types'
-import { useDrawnPolygons } from './hooks/useDrawnPolygons'
+import { useDrawer } from './hooks/useDrawer'
 import { serveFromBase } from './lib/asset'
 import { CENTER_OF_EUROPE, MAP_PADDING } from './lib/constants'
 import { DrawControl } from './views/map/DrawControl'
@@ -24,7 +24,7 @@ export function App() {
     onMapUpdate,
     onPopulate,
     onHarshDelete
-  } = useDrawnPolygons()
+  } = useDrawer()
 
   const handleZoomToPolygon = useCallback(
     (polygon: DrawnPolygon | GeoPolygon) => {

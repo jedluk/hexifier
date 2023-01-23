@@ -3,7 +3,7 @@ import { useCallback, useRef, useState } from 'react'
 
 import { DrawnPolygon, GeoPolygon } from '../@types'
 
-interface DrawnPolygons {
+interface Drawer {
   features: Record<string, DrawnPolygon>
   draw: React.MutableRefObject<MapboxDraw>
   onMapDelete: (event: { features: DrawnPolygon[] }) => void
@@ -12,7 +12,7 @@ interface DrawnPolygons {
   onHarshDelete: (polygon: DrawnPolygon) => void
 }
 
-export function useDrawnPolygons(): DrawnPolygons {
+export function useDrawer(): Drawer {
   const [features, setFeatures] = useState<Record<string, DrawnPolygon>>({})
   const draw = useRef<MapboxDraw>(
     new MapboxDraw({
