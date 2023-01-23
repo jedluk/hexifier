@@ -1,10 +1,14 @@
-import { Maybe } from '../@types'
+import { JSObject, Maybe } from '../@types'
 
 export function defaultsTo<T, S>(
   value: Maybe<T> | undefined,
   defaultValue: S
 ): T | S {
   return value === null || value === undefined ? defaultValue : value
+}
+
+export function keys<T extends JSObject>(o: T): (keyof T)[] {
+  return Object.keys(o)
 }
 
 export function isNull(x: unknown): x is null {

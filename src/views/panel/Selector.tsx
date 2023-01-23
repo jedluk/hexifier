@@ -1,9 +1,10 @@
 import React, { Fragment, useEffect, useMemo } from 'react'
 
-import { HEX_AREAS_SQUARE_KM } from '../../lib/constants'
+import { keys } from '../../lib'
+import { HEX_AREA_SQUARE_KM } from '../../lib/constants'
 import { formatNumber } from '../../lib/formatter'
 
-const FEATURES_LIMIT = 50_000
+const FEATURES_LIMIT = 100_000
 
 interface SelectorProps {
   hexSize: number
@@ -14,12 +15,13 @@ interface SelectorProps {
 export function Selector(props: SelectorProps) {
   const { onChange, hexSize, polygonArea } = props
 
-  const options = useMemo(() => {
-    return Object.keys(HEX_AREAS_SQUARE_KM).filter(
-      (hexSize) =>
-        polygonArea / HEX_AREAS_SQUARE_KM[Number(hexSize)] < FEATURES_LIMIT
-    )
-  }, [polygonArea])
+  const options = useMemo(
+    () =>
+      keys(HEX_AREA_SQUARE_KM).filter(
+        (hexSize) => polygonArea / HEX_AREA_SQUARE_KM[hexSize] < FEATURES_LIMIT
+      ),
+    [polygonArea]
+  )
 
   useEffect(() => {
     const defaultOption = Number(options[options.length - 3]) || 0
