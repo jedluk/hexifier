@@ -13,13 +13,12 @@ import { Button } from '../../components/button/Button'
 import { RenderWhen } from '../../components/render-when/RenderWhen'
 import { Splitter } from '../../components/splitter/Splitter'
 import { Area } from '../../components/svg'
-import { HEX_AREAS_SQUARE_KM } from '../../lib/constants'
 import { formatNumber } from '../../lib/formatter'
 import { toGeoJSONCollection } from '../../lib/hexes'
 import { PolygonDownload } from './PolygonDownload'
+import { Selector } from './Selector'
 import { Shape } from './Shape'
 
-const FEATURES_LIMIT = 50_000
 const NO_HEXES: string[] = []
 
 interface PolygonDetailsProps {
@@ -41,24 +40,11 @@ export function PolygonDetails(props: PolygonDetailsProps) {
     [polygon]
   )
 
-  const options = useMemo(() => {
-    return Object.keys(HEX_AREAS_SQUARE_KM).filter(
-      (hexSize) =>
-        polygonAreaInSquareKm / HEX_AREAS_SQUARE_KM[Number(hexSize)] <
-        FEATURES_LIMIT
-    )
-  }, [polygonAreaInSquareKm])
-
   const handleConvertToHexGeoJSON = useCallback(() => {
     const hexes = polygonToCells(polygon.geometry.coordinates, hexSize, true)
     setHexes(hexes)
     onDraw(toGeoJSONCollection(hexes))
   }, [polygon, hexSize, onDraw])
-
-  useEffect(() => {
-    const defaultOption = Number(options[options.length - 3]) || 0
-    setHexSize(defaultOption)
-  }, [options])
 
   useEffect(() => {
     setHexes(NO_HEXES)
@@ -82,30 +68,14 @@ export function PolygonDetails(props: PolygonDetailsProps) {
       <Shape polygon={polygon} />
 
       <div className="text-center text-sm mt-2">
-        <strong>~ {formatNumber(polygonAreaInSquareKm)} km²</strong>
+        <b>~ {formatNumber(polygonAreaInSquareKm)} km²</b>
       </div>
 
-      <label
-        htmlFor="hexSize"
-        className="block mt-4 text-sm font-medium text-gray-900"
-      >
-        Output hex size:
-      </label>
-
-      <div className="flex align-center">
-        <select
-          value={hexSize}
-          id="hexSize"
-          onChange={(evt) => setHexSize(Number(evt.target.value))}
-          className="grow bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-50 p-2.5"
-        >
-          {options.map((key) => (
-            <option key={key} value={key}>
-              {key} ({formatNumber(HEX_AREAS_SQUARE_KM[Number(key)])} km²)
-            </option>
-          ))}
-        </select>
-      </div>
+      <Selector
+        polygonArea={polygonAreaInSquareKm}
+        hexSize={hexSize}
+        onChange={setHexSize}
+      />
 
       <div className="my-2 flex justify-end">
         <Button
