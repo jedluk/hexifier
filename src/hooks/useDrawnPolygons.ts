@@ -1,7 +1,14 @@
 import { useCallback, useState } from 'react'
+
 import { DrawnPolygon } from '../@types'
 
-export function useDrawnPolygons() {
+interface DrawnPolygons {
+  features: Record<string, DrawnPolygon>
+  onDelete: (event: { features: DrawnPolygon[] }) => void
+  onUpdate: (event: { features: DrawnPolygon[] }) => void
+}
+
+export function useDrawnPolygons(): DrawnPolygons {
   const [features, setFeatures] = useState<Record<string, DrawnPolygon>>({})
 
   const onUpdate = useCallback((event: { features: DrawnPolygon[] }) => {
@@ -25,5 +32,5 @@ export function useDrawnPolygons() {
     )
   }, [])
 
-  return { features, onUpdate, onDelete }
+  return { features, onDelete, onUpdate }
 }

@@ -1,16 +1,21 @@
-import React, { Fragment, useMemo, useState } from 'react'
-import { Area } from './components/svg'
-
 import area from '@turf/area'
-import { Button } from './components/button/Button'
-import { DrawnPolygon, HexCollection, Maybe } from './@types'
-import { HEX_AREAS_SQUARE_KM } from './lib/constants'
 import { polygonToCells } from 'h3-js'
-import { useCallback, useEffect } from 'react'
+import React, {
+  Fragment,
+  useCallback,
+  useEffect,
+  useMemo,
+  useState
+} from 'react'
+
+import { DrawnPolygon, HexCollection, Maybe } from './@types'
+import { Button } from './components/button/Button'
 import { RenderWhen } from './components/render-when/RenderWhen'
-import { PolygonDownload } from './PolygonDownload'
-import { toGeoJSONCollection } from './lib/hexes'
 import { Splitter } from './components/splitter/Splitter'
+import { Area } from './components/svg'
+import { HEX_AREAS_SQUARE_KM } from './lib/constants'
+import { toGeoJSONCollection } from './lib/hexes'
+import { PolygonDownload } from './PolygonDownload'
 import { Shape } from './Shape'
 
 const FEATURES_LIMIT = 50_000
@@ -47,7 +52,7 @@ export function PolygonDetails(props: PolygonDetailsProps) {
     const hexes = polygonToCells(polygon.geometry.coordinates, hexSize, true)
     setHexes(hexes)
     onDraw(toGeoJSONCollection(hexes))
-  }, [polygon, hexSize])
+  }, [polygon, hexSize, onDraw])
 
   useEffect(() => {
     const defaultOption = Number(options[options.length - 3]) || 0
@@ -57,7 +62,7 @@ export function PolygonDetails(props: PolygonDetailsProps) {
   useEffect(() => {
     setHexes(NO_HEXES)
     onDraw(null)
-  }, [hexSize])
+  }, [hexSize, onDraw])
 
   return (
     <Fragment>
@@ -90,12 +95,12 @@ export function PolygonDetails(props: PolygonDetailsProps) {
         <select
           value={hexSize}
           id="hexSize"
-          onChange={(evt) => setHexSize(+evt.target.value)}
+          onChange={(evt) => setHexSize(Number(evt.target.value))}
           className="grow bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-50 p-2.5"
         >
           {options.map((key) => (
             <option key={key} value={key}>
-              {key} ({HEX_AREAS_SQUARE_KM[+key]} km²)
+              {key} ({HEX_AREAS_SQUARE_KM[Number(key)]} km²)
             </option>
           ))}
         </select>

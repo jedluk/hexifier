@@ -1,7 +1,8 @@
-import { Layer, Source } from 'react-map-gl'
 import React from 'react'
+import { Layer, Source } from 'react-map-gl'
+
+import { HexCollection, Maybe } from './@types'
 import { isNull } from './lib'
-import { Maybe, HexCollection } from './@types'
 
 interface HexProps {
   collection: Maybe<HexCollection>

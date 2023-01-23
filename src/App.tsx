@@ -1,17 +1,18 @@
+import bbox from '@turf/bbox'
+import maplibre from 'maplibre-gl'
 import React, { Fragment, useCallback, useRef, useState } from 'react'
 import MapGL, { MapRef, NavigationControl } from 'react-map-gl'
-import maplibre from 'maplibre-gl'
-import DrawControl from './DrawControl'
-import { serveFromBase } from './lib/asset'
-import { Panel } from './Panel'
-import { useDrawnPolygons } from './hooks/useDrawnPolygons'
-import { DrawnPolygon, Maybe, HexCollection } from './@types'
-import bbox from '@turf/bbox'
-import { CENTER_OF_EUROPE, MAP_PADDING } from './lib/constants'
-import { Hex } from './Hex'
-import { Names } from './Names'
 
-export default function App() {
+import { DrawnPolygon, HexCollection, Maybe } from './@types'
+import { DrawControl } from './DrawControl'
+import { Hex } from './Hex'
+import { useDrawnPolygons } from './hooks/useDrawnPolygons'
+import { serveFromBase } from './lib/asset'
+import { CENTER_OF_EUROPE, MAP_PADDING } from './lib/constants'
+import { Names } from './Names'
+import { Panel } from './Panel'
+
+export function App() {
   const mapRef = useRef<Maybe<MapRef>>(null)
 
   const [idToRemove, setIdToRemove] = useState('')
@@ -22,10 +23,13 @@ export default function App() {
     mapRef.current?.fitBounds(bbox(polygon) as [number, number, number, number])
   }, [])
 
-  const handleDeletePolygon = useCallback((polygon: DrawnPolygon) => {
-    onDelete({ features: [polygon] })
-    setIdToRemove(polygon.id)
-  }, [])
+  const handleDeletePolygon = useCallback(
+    (polygon: DrawnPolygon) => {
+      onDelete({ features: [polygon] })
+      setIdToRemove(polygon.id)
+    },
+    [onDelete]
+  )
 
   const polygons = Object.values(features)
 
