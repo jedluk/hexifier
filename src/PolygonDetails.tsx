@@ -18,7 +18,7 @@ import { toGeoJSONCollection } from './lib/hexes'
 import { PolygonDownload } from './PolygonDownload'
 import { Shape } from './Shape'
 
-const FEATURES_LIMIT = 50_000
+const FEATURES_LIMIT = 100_000
 const NO_HEXES: string[] = []
 
 interface PolygonDetailsProps {
