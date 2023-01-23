@@ -16,8 +16,8 @@ export function Upload() {
 
   return (
     <DropFile onFileSelect={setFile}>
-      <UploadIcon className="group-hover:block text-red-300" />
-      <span className="uppercase mt-1 group-hover:hidden">Upload geoJSON</span>
+      <UploadIcon className="group-hover:block" />
+      <span className="uppercase mt-1">Drop geoJSON</span>
     </DropFile>
   )
 }
