@@ -1,4 +1,5 @@
 import React from 'react'
+
 import { Upload as UploadIcon } from './components/svg'
 
 export function Upload() {

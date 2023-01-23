@@ -1,7 +1,8 @@
-import { useEffect, useMemo, useState } from 'react'
+import { useEffect, useState } from 'react'
+
 import { Blob, createObjectURL, revokeObjectURL } from '../globals'
 
-export function useExportablePlainText(content: string) {
+export function useExportablePlainText(content: string): string {
   const [link, setLink] = useState('')
 
   useEffect(() => {
@@ -12,7 +13,7 @@ export function useExportablePlainText(content: string) {
     )
     setLink(urlLink)
     return () => {
-      revokeObjectURL(link)
+      revokeObjectURL(urlLink)
     }
   }, [content])
 

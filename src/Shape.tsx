@@ -1,7 +1,9 @@
-import { DrawnPolygon } from './@types'
+/* eslint-disable @typescript-eslint/no-unsafe-member-access,@typescript-eslint/no-unsafe-call */
 // @ts-expect-error no types for now
 import geojson2svg from 'geojson-to-svg'
-import { useMemo } from 'react'
+import React, { useMemo } from 'react'
+
+import { DrawnPolygon } from './@types'
 
 interface ShapeProps {
   polygon: DrawnPolygon
@@ -14,13 +16,13 @@ export function Shape(props: ShapeProps) {
     return geojson2svg()
       .styles({
         Polygon: {
-          weight: 0.04,
           color: '#7c3aed',
-          fill: 'rgba(124, 58, 237, 0.5)'
+          fill: 'rgba(124, 58, 237, 0.5)',
+          weight: 0.04
         }
       })
       .data(polygon)
-      .render()
+      .render() as string
   }, [polygon])
 
   return (

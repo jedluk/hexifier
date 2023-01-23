@@ -1,4 +1,4 @@
-export function createObjectURL(object: Blob) {
+export function createObjectURL(object: Blob): string {
   return window.URL.createObjectURL(object)
 }
 
