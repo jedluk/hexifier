@@ -9,3 +9,10 @@ export function revokeObjectURL(url: string): void {
 export function Blob(blobParts?: BlobPart[], options?: BlobPropertyBag): Blob {
   return new window.Blob(blobParts, options)
 }
+
+// eslint-disable-next-line @typescript-eslint/ban-types
+export function setTimeout(handler: Function, timeout: number): void {
+  window.setTimeout(handler, timeout)
+}
+
+export const locale = window.navigator.language

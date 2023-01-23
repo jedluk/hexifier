@@ -1,10 +1,14 @@
-import { Maybe } from '../@types'
+import { JSObject, Maybe } from '../@types'
 
 export function defaultsTo<T, S>(
   value: Maybe<T> | undefined,
   defaultValue: S
 ): T | S {
   return value === null || value === undefined ? defaultValue : value
+}
+
+export function keys<T extends JSObject>(o: T): (keyof T)[] {
+  return Object.keys(o)
 }
 
 export function isNull(x: unknown): x is null {
@@ -31,6 +35,16 @@ export function isEmpty(value: ArrayLike<unknown>): boolean {
   return value.length === 0
 }
 
-export function joinClassNames(...classNames: (string | undefined)[]): string {
+export function isNumber(x: unknown): x is number {
+  return typeof x === 'number'
+}
+
+export function isObject(x: unknown): x is object {
+  return typeof x === 'object' && isNotNull(x)
+}
+
+export function joinClassNames(
+  ...classNames: (string | undefined | boolean)[]
+): string {
   return classNames.filter(Boolean).join(' ')
 }

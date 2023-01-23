@@ -1,9 +1,11 @@
 /* eslint-disable @typescript-eslint/no-unsafe-member-access,@typescript-eslint/no-unsafe-call */
+import area from '@turf/area'
 // @ts-expect-error no types for now
 import geojson2svg from 'geojson-to-svg'
 import React, { useMemo } from 'react'
 
-import { DrawnPolygon } from './@types'
+import { DrawnPolygon } from '../../@types'
+import { mapAreaToSVGWidth } from '../../lib/geo'
 
 interface ShapeProps {
   polygon: DrawnPolygon
@@ -18,7 +20,7 @@ export function Shape(props: ShapeProps) {
         Polygon: {
           color: '#7c3aed',
           fill: 'rgba(124, 58, 237, 0.5)',
-          weight: 0.04
+          weight: mapAreaToSVGWidth(area(polygon))
         }
       })
       .data(polygon)

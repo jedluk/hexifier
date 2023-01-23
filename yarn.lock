@@ -4051,6 +4051,11 @@ uri-js@^4.2.2:
   dependencies:
     punycode "^2.1.0"
 
+use-boolean@^1.0.1:
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/use-boolean/-/use-boolean-1.0.1.tgz#1ae938d5365c5faa534435ff6baec576612c618e"
+  integrity sha512-fnCPDMBG6HNq+kWES47CXnDBKs2jxHBGejzsslksYs/KS1/3xNRsKaH90Q9+9lAKuQRgjJF+IYZ6Z5Ck5x/aCA==
+
 use-exportable-csv@^1.0.1:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/use-exportable-csv/-/use-exportable-csv-1.0.1.tgz#517869f4cd743c78b048598a4aab2811ae039871"

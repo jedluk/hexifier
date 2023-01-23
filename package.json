@@ -66,6 +66,7 @@
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-map-gl": "^7.0.21",
+    "use-boolean": "^1.0.1",
     "use-exportable-csv": "^1.0.1"
   }
 }
