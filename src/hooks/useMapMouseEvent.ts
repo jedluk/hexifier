@@ -2,7 +2,7 @@ import { useCallback, useEffect, useRef, useState } from 'react'
 import { MapRef } from 'react-map-gl'
 
 import { HexCollection, HexMarker, Maybe } from '../@types'
-import { isNotEmpty, isNotNull } from '../lib/index'
+import { isEmpty, isNotEmpty, isNotNull } from '../lib/index'
 
 interface MapMouseEvent {
   marker: Maybe<HexMarker>
@@ -28,19 +28,23 @@ export function useMapMouseEvent(
 
   const handleMouseMove = useCallback(
     (event: mapboxgl.MapLayerMouseEvent) => {
+      if (isEmpty(interactiveLayers)) {
+        return
+      }
+
       const { features = [] } = event
-      if (isNotEmpty(features) && isNotNull(map)) {
+      if (isNotEmpty(features)) {
         const { hex } = features[0].properties as { hex: string }
         setHexMarker({ ...event.lngLat, hex })
 
         if (isNotNull(hoveredStateId.current)) {
-          map.setFeatureState(
+          map?.setFeatureState(
             { id: hoveredStateId.current, source: 'hex-area' },
             { hover: false }
           )
         }
         hoveredStateId.current = features[0].id as number
-        map.setFeatureState(
+        map?.setFeatureState(
           { id: hoveredStateId.current, source: 'hex-area' },
           { hover: true }
         )
@@ -48,15 +52,19 @@ export function useMapMouseEvent(
         setHexMarker(null)
       }
     },
-    [map]
+    [interactiveLayers, map]
   )
 
   const handleMouseLeave = useCallback(
     (event: mapboxgl.MapLayerMouseEvent) => {
+      if (isEmpty(interactiveLayers)) {
+        return
+      }
+
       const { features = [] } = event
-      if (isNotEmpty(features) && isNotNull(map)) {
+      if (isNotEmpty(features)) {
         if (isNotNull(hoveredStateId.current)) {
-          map.setFeatureState(
+          map?.setFeatureState(
             { id: hoveredStateId.current, source: 'hex-area' },
             { hover: false }
           )
@@ -64,7 +72,7 @@ export function useMapMouseEvent(
         hoveredStateId.current = null
       }
     },
-    [map]
+    [interactiveLayers, map]
   )
 
   return {
