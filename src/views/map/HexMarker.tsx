@@ -14,7 +14,7 @@ const STYLE: React.CSSProperties = {
   WebkitTextStrokeWidth: 1
 }
 
-export function HexMarker(props: HexMarkerProps) {
+export function HexMarkerComponent(props: HexMarkerProps) {
   const { marker } = props
 
   if (isNull(marker)) {
@@ -28,3 +28,5 @@ export function HexMarker(props: HexMarkerProps) {
     </Marker>
   )
 }
+
+export const HexMarker = React.memo(HexMarkerComponent)
