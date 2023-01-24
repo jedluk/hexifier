@@ -35,7 +35,7 @@ export function DropFile(props: DropFileProps) {
           .then((result) => onFileUpload(result))
           .catch((err: string) => setErrorMessage(err))
       } else {
-        setErrorMessage('Only single (geo)JSON files are allowed.')
+        setErrorMessage('Only single (geo)JSON file is allowed.')
       }
     },
     [setDragInactive, onFileUpload]
