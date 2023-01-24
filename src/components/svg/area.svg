@@ -1,14 +1,21 @@
-<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-<rect x="2" y="2" width="20" height="20" rx="3" stroke="#46505A" stroke-width="2" stroke-linecap="round"/>
-<mask id="mask0_814_162" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="4" y="4" width="16" height="16">
-<rect x="4" y="4" width="16" height="16" fill="#C4C4C4"/>
-</mask>
-<g mask="url(#mask0_814_162)">
-<line x1="9.35355" y1="2.35355" x2="1.35355" y2="10.3536" stroke="#46505A"/>
-<line x1="22.3536" y1="14.3536" x2="14.3536" y2="22.3536" stroke="#46505A"/>
-<line x1="15.3536" y1="1.35355" x2="1.35355" y2="15.3536" stroke="#46505A"/>
-<line x1="22.3536" y1="9.35355" x2="8.35355" y2="23.3536" stroke="#46505A"/>
-<line x1="20.3536" y1="1.35355" x2="1.35355" y2="20.3536" stroke="#46505A"/>
-<line x1="20.3536" y1="6.35355" x2="5.35355" y2="21.3536" stroke="#46505A"/>
-</g>
+<svg width="60" height="60" viewBox="0 0 60 60" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <g>
+        <circle cx="30" cy="30" r="18" fill="none" stroke="#46505A" stroke-width="3" />
+        <line x1="2" y1="50" x2="13" y2="42" stroke="#46505A" stroke-width="4" />
+    </g>
+    <g>
+        <rect x="20" y="20" width="20" height="20" rx="3" stroke="#46505A" stroke-width="2" stroke-linecap="round" />
+        <mask id="mask0_814_162" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="4" y="4" width="16" height="16">
+            <rect x="4" y="4" width="16" height="16" fill="#C4C4C4" />
+        </mask>
+        <g id="mask" mask="url(#mask0_814_162)" transform="translate(18,18)">
+            <line x1="9.35355" y1="2.35355" x2="1.35355" y2="10.3536" stroke="#46505A" />
+            <line x1="22.3536" y1="14.3536" x2="14.3536" y2="22.3536" stroke="#46505A" />
+            <line x1="15.3536" y1="1.35355" x2="1.35355" y2="15.3536" stroke="#46505A" />
+            <line x1="22.3536" y1="9.35355" x2="8.35355" y2="23.3536" stroke="#46505A" />
+            <line x1="20.3536" y1="1.35355" x2="1.35355" y2="20.3536" stroke="#46505A" />
+            <line x1="20.3536" y1="6.35355" x2="5.35355" y2="21.3536" stroke="#46505A" />
+        </g>
+    </g>
+
 </svg>
