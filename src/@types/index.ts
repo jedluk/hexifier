@@ -55,3 +55,9 @@ export type GeoPolygonCollection = FeatureCollection<
 export interface DrawnPolygon extends GeoPolygon {
   id: string
 }
+
+export interface HexMarker {
+  lat: number
+  lng: number
+  hex: string
+}
