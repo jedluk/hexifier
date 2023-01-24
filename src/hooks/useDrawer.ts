@@ -6,17 +6,16 @@ import { DrawnPolygon, GeoPolygon } from '../@types'
 interface Drawer {
   features: Record<string, DrawnPolygon>
   draw: React.MutableRefObject<MapboxDraw>
-  onMapDelete: (event: { features: DrawnPolygon[] }) => void
   onMapUpdate: (event: { features: DrawnPolygon[] }) => void
   onPopulate: (polygons: GeoPolygon[]) => void
-  onHarshDelete: (polygon: DrawnPolygon) => void
+  onDelete: (polygon: DrawnPolygon) => void
 }
 
 export function useDrawer(): Drawer {
   const [features, setFeatures] = useState<Record<string, DrawnPolygon>>({})
   const draw = useRef<MapboxDraw>(
     new MapboxDraw({
-      controls: { polygon: true, trash: true },
+      controls: { polygon: true },
       defaultMode: 'draw_polygon',
       displayControlsDefault: false
     })
@@ -34,22 +33,14 @@ export function useDrawer(): Drawer {
     )
   }, [])
 
-  const onMapDelete = useCallback((event: { features: DrawnPolygon[] }) => {
-    const idsToRemove = event.features.map((f) => f.id)
+  const onDelete = useCallback((polygon: DrawnPolygon) => {
     setFeatures((currFeatures) =>
       Object.fromEntries(
-        Object.entries(currFeatures).filter(([id]) => !idsToRemove.includes(id))
+        Object.entries(currFeatures).filter(([id]) => id !== polygon.id)
       )
     )
+    draw.current.delete(polygon.id)
   }, [])
-
-  const onHarshDelete = useCallback(
-    (polygon: DrawnPolygon) => {
-      onMapDelete({ features: [polygon] })
-      draw.current.delete(polygon.id)
-    },
-    [onMapDelete]
-  )
 
   const onPopulate = useCallback((polygons: GeoPolygon[]) => {
     const features = polygons.map((polygon) => ({
@@ -66,5 +57,5 @@ export function useDrawer(): Drawer {
     )
   }, [])
 
-  return { draw, features, onHarshDelete, onMapDelete, onMapUpdate, onPopulate }
+  return { draw, features, onDelete, onMapUpdate, onPopulate }
 }

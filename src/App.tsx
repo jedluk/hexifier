@@ -19,14 +19,7 @@ export function App() {
 
   const [hexCollection, setHexCollection] = useState<Maybe<HexCollection>>(null)
 
-  const {
-    draw,
-    features,
-    onMapDelete,
-    onMapUpdate,
-    onPopulate,
-    onHarshDelete
-  } = useDrawer()
+  const { draw, features, onMapUpdate, onPopulate, onDelete } = useDrawer()
 
   const { marker, interactiveLayers, handleMouseMove, handleMouseLeave } =
     useMapMouseEvent(mapRef.current, hexCollection)
@@ -53,7 +46,7 @@ export function App() {
       <Panel
         polygons={polygons}
         onAddHexCollection={setHexCollection}
-        onDeletePolygon={onHarshDelete}
+        onDeletePolygon={onDelete}
         onAddPolygons={handleAddPolygons}
         onZoomToPolygon={handleZoomToPolygon}
       />
@@ -71,12 +64,11 @@ export function App() {
           onMouseMove={handleMouseMove}
           onMouseLeave={handleMouseLeave}
         >
-          <NavigationControl showCompass position="top-right" />
+          <NavigationControl showCompass={false} position="top-right" />
           <DrawControl
             draw={draw}
             onCreate={onMapUpdate}
             onUpdate={onMapUpdate}
-            onDelete={onMapDelete}
           />
           <HexArea collection={hexCollection} />
           <HexMarker marker={marker} />
