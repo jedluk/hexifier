@@ -11,7 +11,7 @@ import { Upload } from './Upload'
 interface PanelProps {
   polygons: DrawnPolygon[]
   onAddPolygons: (polygons: GeoPolygon[]) => void
-  onSetHexCollection: (collection: Maybe<HexCollection>) => void
+  onAddHexCollection: (collection: Maybe<HexCollection>) => void
   onZoomToPolygon: (polygon: DrawnPolygon) => void
   onDeletePolygon: (polygon: DrawnPolygon) => void
 }
@@ -22,7 +22,7 @@ export function Panel(props: PanelProps) {
     onAddPolygons,
     onZoomToPolygon,
     onDeletePolygon,
-    onSetHexCollection
+    onAddHexCollection
   } = props
 
   return (
@@ -49,12 +49,12 @@ export function Panel(props: PanelProps) {
               key={polygon.id}
               index={idx}
               polygon={polygon}
-              onDraw={onSetHexCollection}
+              onAddHexCollection={onAddHexCollection}
               onDelete={() => {
                 onDeletePolygon(polygon)
-                onSetHexCollection(null)
+                onAddHexCollection(null)
               }}
-              onSelect={onZoomToPolygon.bind(null, polygon)}
+              onSelect={() => onZoomToPolygon(polygon)}
             />
           ))}
         </div>

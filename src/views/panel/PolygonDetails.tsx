@@ -5,6 +5,7 @@ import React, {
   useCallback,
   useEffect,
   useMemo,
+  useRef,
   useState
 } from 'react'
 
@@ -24,32 +25,38 @@ const NO_HEXES: string[] = []
 interface PolygonDetailsProps {
   index: number
   polygon: DrawnPolygon
-  onDraw: (collection: Maybe<HexCollection>) => void
+  onAddHexCollection: (collection: Maybe<HexCollection>) => void
   onSelect: () => void
   onDelete: () => void
 }
 
 export function PolygonDetails(props: PolygonDetailsProps) {
+  const headerRef = useRef<HTMLDivElement>(null)
   const [hexes, setHexes] = useState<string[]>(NO_HEXES)
   const [hexSize, setHexSize] = useState(-1)
 
-  const { index, polygon, onSelect, onDelete, onDraw } = props
+  const { index, polygon, onSelect, onDelete, onAddHexCollection } = props
 
   const polygonAreaInSquareKm = useMemo(
     () => area(polygon) / 1_000_000,
     [polygon]
   )
 
+  const handleIconClick = useCallback(() => {
+    onSelect()
+    headerRef.current?.scrollIntoView({ behavior: 'smooth' })
+  }, [onSelect])
+
   const handleConvertToHexGeoJSON = useCallback(() => {
     const hexes = polygonToCells(polygon.geometry.coordinates, hexSize, true)
     setHexes(hexes)
-    onDraw(toGeoJSONCollection(hexes))
-  }, [polygon, hexSize, onDraw])
+    onAddHexCollection(toGeoJSONCollection(hexes))
+  }, [polygon, hexSize, onAddHexCollection])
 
   useEffect(() => {
     setHexes(NO_HEXES)
-    onDraw(null)
-  }, [hexSize, onDraw])
+    onAddHexCollection(null)
+  }, [hexSize, onAddHexCollection])
 
   return (
     <Fragment>
@@ -57,8 +64,8 @@ export function PolygonDetails(props: PolygonDetailsProps) {
         className="sticky z-10 bg-white [&:not(:first-child)]:mt-5 h-12 mb-2"
         style={{ top: index * 48 }}
       >
-        <div className="flex items-center h-full">
-          <button onClick={onSelect}>
+        <div className="flex items-center h-full" ref={headerRef}>
+          <button onClick={handleIconClick}>
             <Area width={40} height={40} />
           </button>
           <span className="mx-1">Polygon {index + 1}</span>
@@ -92,7 +99,7 @@ export function PolygonDetails(props: PolygonDetailsProps) {
         />
       </div>
 
-      <RenderWhen condition={hexes !== NO_HEXES}>
+      <RenderWhen condition={!Object.is(hexes, NO_HEXES)}>
         <div className="text-sm mt-2">
           Polygon is covered by <strong>{hexes?.length}</strong> hexes of size{' '}
           <strong>{hexSize}</strong>

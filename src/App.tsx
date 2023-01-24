@@ -47,7 +47,7 @@ export function App() {
     <Fragment>
       <Panel
         polygons={polygons}
-        onSetHexCollection={setHexCollection}
+        onAddHexCollection={setHexCollection}
         onDeletePolygon={onHarshDelete}
         onAddPolygons={handleAddPolygons}
         onZoomToPolygon={handleZoomToPolygon}
