@@ -2,7 +2,7 @@
 
 Web app for easy geojson <=> H3 conversion and more.
 
-[!Screen](https://raw.githubusercontent.com//jedluk/random/master/hexifier/hexifier.png)
+![Screen](https://raw.githubusercontent.com//jedluk/random/master/hexifier/hexifier.png)
 
 
 # Manual:
