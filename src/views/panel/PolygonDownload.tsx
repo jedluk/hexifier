@@ -19,7 +19,7 @@ export function PolygonDownload(props: PolygonDownloadProps) {
 
   const csvLink = useExportableCSV(csvContent, {
     bom: true,
-    headers: [`hex-${size}`]
+    headers: [`hex-${Object.is(size, Math.PI) ? 'compact' : size}`]
   })
 
   const plainTextLink = useExportablePlainText(textContent)
