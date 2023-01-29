@@ -9,11 +9,12 @@ const FEATURES_LIMIT = 100_000
 interface SelectorProps {
   hexSize: number
   polygonArea: number
+  onSetMinSize: (size: number) => void
   onChange: (hexSize: number) => void
 }
 
 export function Selector(props: SelectorProps) {
-  const { onChange, hexSize, polygonArea } = props
+  const { onChange, onSetMinSize, hexSize, polygonArea } = props
 
   const options = useMemo(
     () =>
@@ -25,8 +26,9 @@ export function Selector(props: SelectorProps) {
 
   useEffect(() => {
     const defaultOption = Number(options[options.length - 3]) || 0
+    onSetMinSize(Number(options[options.length - 1]))
     onChange(defaultOption)
-  }, [options, onChange])
+  }, [options, onSetMinSize, onChange])
 
   return (
     <Fragment>
@@ -47,6 +49,7 @@ export function Selector(props: SelectorProps) {
             {hexSize} ({formatNumber(HEX_AREA_SQUARE_KM[hexSize])} km²)
           </option>
         ))}
+        <option value={Math.PI}>compact</option>
       </select>
     </Fragment>
   )

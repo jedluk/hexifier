@@ -1,5 +1,5 @@
 import area from '@turf/area'
-import { polygonToCells } from 'h3-js'
+import { compactCells, polygonToCells } from 'h3-js'
 import React, {
   Fragment,
   useCallback,
@@ -34,6 +34,7 @@ export function PolygonDetails(props: PolygonDetailsProps) {
   const headerRef = useRef<HTMLDivElement>(null)
   const [hexes, setHexes] = useState<string[]>(NO_HEXES)
   const [hexSize, setHexSize] = useState(-1)
+  const [minSize, setMinSize] = useState(-1)
 
   const { index, polygon, onSelect, onDelete, onAddHexCollection } = props
 
@@ -48,10 +49,13 @@ export function PolygonDetails(props: PolygonDetailsProps) {
   }, [onSelect])
 
   const handleConvertToHexGeoJSON = useCallback(() => {
-    const hexes = polygonToCells(polygon.geometry.coordinates, hexSize, true)
+    const { coordinates } = polygon.geometry
+    const hexes = Object.is(hexSize, Math.PI) // PI is just shortcut for require compact
+      ? compactCells(polygonToCells(coordinates, minSize, true))
+      : polygonToCells(coordinates, hexSize, true)
     setHexes(hexes)
     onAddHexCollection(toGeoJSONCollection(hexes))
-  }, [polygon, hexSize, onAddHexCollection])
+  }, [polygon, hexSize, minSize, onAddHexCollection])
 
   useEffect(() => {
     setHexes(NO_HEXES)
@@ -81,6 +85,7 @@ export function PolygonDetails(props: PolygonDetailsProps) {
       <Selector
         polygonArea={polygonAreaInSquareKm}
         hexSize={hexSize}
+        onSetMinSize={setMinSize}
         onChange={setHexSize}
       />
 
@@ -101,8 +106,7 @@ export function PolygonDetails(props: PolygonDetailsProps) {
 
       <RenderWhen condition={!Object.is(hexes, NO_HEXES)}>
         <div className="text-sm mt-2">
-          Polygon is covered by <strong>{hexes?.length}</strong> hexes of size{' '}
-          <strong>{hexSize}</strong>
+          Polygon is covered by <strong>{hexes?.length}</strong> hexes
         </div>
         <PolygonDownload
           hexes={hexes}
