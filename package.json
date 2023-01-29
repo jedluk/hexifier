@@ -4,7 +4,6 @@
   "license": "MIT",
   "private": true,
   "version": "0.0.0",
-  "type": "module",
   "scripts": {
     "dev": "vite",
     "build": "yarn run lint:fix && tsc && vite build --base=/hexifier",

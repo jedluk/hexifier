@@ -1,8 +1,8 @@
 import React, { Fragment } from 'react'
 import { Marker } from 'react-map-gl'
 
-import { DrawnPolygon } from '../../@types'
 import { findLocationOnTop } from '../../lib/geo'
+import { DrawnPolygon } from '../../types'
 
 interface NamesProps {
   polygons: DrawnPolygon[]

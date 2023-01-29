@@ -1,8 +1,8 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
 import { MapRef } from 'react-map-gl'
 
-import { HexCollection, HexMarker, Maybe } from '../@types'
 import { isEmpty, isNotEmpty, isNotNull } from '../lib/index'
+import { HexCollection, HexMarker, Maybe } from '../types'
 
 interface MapMouseEvent {
   marker: Maybe<HexMarker>
@@ -33,6 +33,7 @@ export function useMapMouseEvent(
       }
 
       const { features = [] } = event
+
       if (isNotEmpty(features)) {
         const { hex } = features[0].properties as { hex: string }
         setHexMarker({ ...event.lngLat, hex })

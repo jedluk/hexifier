@@ -1,4 +1,4 @@
-import { GeoPolygon, GeoPolygonCollection, JSObject, Maybe } from '../@types'
+import { GeoPolygon, GeoPolygonCollection, JSObject, Maybe } from '../types'
 import { isNotNull, isNull, isNumber, isObject } from '.'
 
 export function isSingleJSONFile(files: Maybe<FileList>): files is FileList {

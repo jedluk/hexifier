@@ -1,7 +1,7 @@
 import MapboxDraw from '@mapbox/mapbox-gl-draw'
 import { MapRef, useControl } from 'react-map-gl'
 
-import { DrawnPolygon } from '../../@types'
+import { DrawnPolygon } from '../../types'
 
 type DrawControlProps = ConstructorParameters<typeof MapboxDraw>[0] & {
   draw: React.MutableRefObject<MapboxDraw>

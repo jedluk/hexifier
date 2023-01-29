@@ -1,7 +1,7 @@
 import React from 'react'
 
-import { GeoPolygon } from '../../@types'
 import { Upload as UploadIcon } from '../../components/svg'
+import { GeoPolygon } from '../../types'
 import { DropFile } from './DropFile'
 
 interface UploadProps {

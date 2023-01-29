@@ -1,9 +1,11 @@
 import MapboxDraw from '@mapbox/mapbox-gl-draw'
 import { useCallback, useRef, useState } from 'react'
 
-import { DrawnPolygon, GeoPolygon } from '../@types'
+import { areMarkers, arePolygons, toFlatCollection } from '../lib/feature'
+import { DrawnPolygon, GeoPolygon, Marker, Maybe } from '../types'
 
 interface Drawer {
+  marker: Maybe<Marker>
   features: Record<string, DrawnPolygon>
   draw: React.MutableRefObject<MapboxDraw>
   onMapUpdate: (event: { features: DrawnPolygon[] }) => void
@@ -13,25 +15,27 @@ interface Drawer {
 
 export function useDrawer(): Drawer {
   const [features, setFeatures] = useState<Record<string, DrawnPolygon>>({})
+  const [marker, setMarker] = useState<Maybe<Marker>>(null)
+
   const draw = useRef<MapboxDraw>(
     new MapboxDraw({
-      controls: { polygon: true },
+      controls: { point: true, polygon: true },
       defaultMode: 'draw_polygon',
       displayControlsDefault: false
     })
   )
 
-  const onMapUpdate = useCallback((event: { features: DrawnPolygon[] }) => {
-    setFeatures((currFeatures) =>
-      event.features.reduce(
-        (acc, feature) => {
-          acc[feature.id] = feature
-          return acc
-        },
-        { ...currFeatures }
-      )
-    )
-  }, [])
+  const onMapUpdate = useCallback(
+    (event: { features: DrawnPolygon[] | Marker[] }) => {
+      const { features } = event
+      if (arePolygons(features)) {
+        setFeatures((currFeatures) => toFlatCollection(features, currFeatures))
+      } else if (areMarkers(features)) {
+        setMarker(features[0])
+      }
+    },
+    []
+  )
 
   const onDelete = useCallback((polygon: DrawnPolygon) => {
     setFeatures((currFeatures) =>
@@ -57,5 +61,5 @@ export function useDrawer(): Drawer {
     )
   }, [])
 
-  return { draw, features, onDelete, onMapUpdate, onPopulate }
+  return { draw, features, marker, onDelete, onMapUpdate, onPopulate }
 }

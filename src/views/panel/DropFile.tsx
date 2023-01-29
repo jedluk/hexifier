@@ -8,11 +8,11 @@ import React, {
 } from 'react'
 import { useBoolean } from 'use-boolean'
 
-import { GeoPolygon, Maybe } from '../../@types'
 import { setTimeout } from '../../globals'
 import { KEYBOARD_KEYS } from '../../lib/constants'
 import { isNotNull, joinClassNames } from '../../lib/index'
 import { isSingleJSONFile, isValidGeoJSON } from '../../lib/upload'
+import { GeoPolygon, Maybe } from '../../types'
 
 interface DropFileProps {
   children: React.ReactNode

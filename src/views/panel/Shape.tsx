@@ -4,8 +4,8 @@ import area from '@turf/area'
 import geojson2svg from 'geojson-to-svg'
 import React, { useMemo } from 'react'
 
-import { DrawnPolygon } from '../../@types'
 import { mapAreaToSVGWidth } from '../../lib/geo'
+import { DrawnPolygon } from '../../types'
 
 interface ShapeProps {
   polygon: DrawnPolygon
