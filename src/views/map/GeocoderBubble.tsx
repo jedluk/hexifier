@@ -33,7 +33,7 @@ export function GeocoderBubble(props: GeocoderBubbleProps) {
     onSuccess(osmElement) {
       setOSMElement(osmElement)
       onZoom(osmElement.geojson as unknown as GeoPolygon, {
-        padding: { ...MAP_PADDING, right: 200, top: 160 }
+        padding: { ...MAP_PADDING, right: 200, top: 200 }
       })
     },
     queryFn: () => reverseGeocode(lat, lon, zoom),
@@ -87,6 +87,14 @@ export function GeocoderBubble(props: GeocoderBubbleProps) {
         {isNotNull(osmElement) && (
           <div className="p-1">
             <strong>{osmElement.display_name}</strong>
+            <div className="my-2">
+              See
+              <Link
+                className="ml-1"
+                text="OSM details"
+                url={`https://www.openstreetmap.org/${osmElement.osm_type}/${osmElement.osm_id}`}
+              />
+            </div>
             <Splitter size="sm" className="my-1" />
             <span>Select geocoding</span>
             <Link
@@ -94,6 +102,7 @@ export function GeocoderBubble(props: GeocoderBubbleProps) {
               url="https://wiki.openstreetmap.org/wiki/Zoom_level"
             />
             <ZoomSelector value={zoom} onChange={setZoom} />
+
             <div className="flex justify-end mt-2">
               <Button text="add" className="px-2" onClick={handleAddPolygon} />
             </div>
