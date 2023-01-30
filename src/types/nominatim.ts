@@ -1,19 +1,6 @@
+import { LineString, MultiPolygon, Point, Polygon } from './index'
 /* eslint-disable @typescript-eslint/no-namespace */
 export namespace Nominatim {
-  type NominatimGeoJSON =
-    | {
-        type: 'MultiPolygon'
-        coordinates: [number, number][][][]
-      }
-    | {
-        type: 'Polygon'
-        coordinates: [number, number][][]
-      }
-    | {
-        type: 'Point'
-        ccoordinates: [number, number]
-      }
-
   export interface AddressDetails {
     house_number?: string
     road?: string
@@ -39,6 +26,6 @@ export namespace Nominatim {
     address: AddressDetails
     importance: number
     addresstype: string
-    geojson: NominatimGeoJSON
+    geojson: Point | LineString | Polygon | MultiPolygon
   }
 }

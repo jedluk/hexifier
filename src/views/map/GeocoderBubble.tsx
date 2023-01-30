@@ -14,10 +14,10 @@ import { Link } from '../../components/link/Link'
 import { RenderWhen } from '../../components/render-when/RenderWhen'
 import { Splitter } from '../../components/splitter/Splitter'
 import { MAP_PADDING } from '../../lib/constants'
+import { isPolygonLike } from '../../lib/feature'
 import { findLocationOnTop } from '../../lib/geo'
-import { isNotNull, isNotUndefined } from '../../lib/index'
-import { GeoPolygon, Marker, Maybe } from '../../types'
-import { Nominatim } from '../../types/nominatim'
+import { isNotUndefined } from '../../lib/index'
+import { GeoPolygon, Marker } from '../../types'
 import { ZoomSelector } from './ZoomSelector'
 
 interface GeocoderBubbleProps {
@@ -31,13 +31,19 @@ export function GeocoderBubble(props: GeocoderBubbleProps) {
   const { marker, onZoom, onAddPolygon, onDeleteMarker } = props
   const [lon, lat] = marker.geometry.coordinates
 
-  const [osmElement, setOSMElement] =
-    useState<Maybe<Nominatim.OSMElement>>(null)
   const [zoom, setZoom] = useState(10)
 
+  const { data: osmElement, isLoading } = useQuery({
+    keepPreviousData: false,
+    queryFn: () => reverseGeocode(lat, lon, zoom),
+    queryKey: ['reverseGeocode', { lat, lon, zoom }],
+    staleTime: Infinity
+  })
+
   const handleAddPolygon = useCallback(() => {
-    if (isNotNull(osmElement)) {
+    if (isPolygonLike(osmElement)) {
       const { geojson } = osmElement
+
       const polygon = {
         geometry: {
           coordinates:
@@ -49,13 +55,14 @@ export function GeocoderBubble(props: GeocoderBubbleProps) {
         properties: {},
         type: 'Feature'
       } as const
+
       onAddPolygon([polygon])
       onDeleteMarker()
     }
   }, [onAddPolygon, onDeleteMarker, osmElement])
 
   const [popupLon, popupLat] = useMemo(() => {
-    if (isNotNull(osmElement)) {
+    if (isPolygonLike(osmElement)) {
       const { type } = osmElement.geojson
       return findLocationOnTop(
         type === 'MultiPolygon'
@@ -66,21 +73,13 @@ export function GeocoderBubble(props: GeocoderBubbleProps) {
     return marker.geometry.coordinates
   }, [marker, osmElement])
 
-  const { data, isLoading } = useQuery({
-    keepPreviousData: false,
-    queryFn: () => reverseGeocode(lat, lon, zoom),
-    queryKey: ['reverseGeocode', { lat, lon, zoom }],
-    staleTime: Infinity
-  })
-
   useEffect(() => {
-    if (isNotUndefined(data)) {
-      setOSMElement(data)
-      onZoom(data.geojson as unknown as GeoPolygon, {
+    if (isPolygonLike(osmElement)) {
+      onZoom(osmElement.geojson as unknown as GeoPolygon, {
         padding: { ...MAP_PADDING, right: 200, top: 200 }
       })
     }
-  }, [data, onZoom])
+  }, [osmElement, onZoom])
 
   return (
     <Fragment>
@@ -94,7 +93,7 @@ export function GeocoderBubble(props: GeocoderBubbleProps) {
         <RenderWhen condition={isLoading}>
           <span className="blur-sm">{'blurry text'.repeat(5)}</span>
         </RenderWhen>
-        {isNotNull(osmElement) && (
+        {isNotUndefined(osmElement) && (
           <div className="p-1">
             <strong>{osmElement.display_name}</strong>
             <div className="my-2">
@@ -119,7 +118,7 @@ export function GeocoderBubble(props: GeocoderBubbleProps) {
           </div>
         )}
       </Popup>
-      {isNotNull(osmElement) && (
+      {isNotUndefined(osmElement) && (
         // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
         <Source id="geocoder-area" type="geojson" data={osmElement.geojson}>
           <Layer

@@ -1,4 +1,5 @@
-import { DrawnPolygon, Marker } from '../types'
+import { DrawnPolygon, Marker, MultiPolygon, Polygon } from '../types'
+import { Nominatim } from '../types/nominatim'
 
 export function arePolygons(
   features: DrawnPolygon[] | Marker[]
@@ -24,5 +25,14 @@ export function toFlatCollection(
       return acc
     },
     { ...current }
+  )
+}
+
+export function isPolygonLike(
+  osmElement?: Nominatim.OSMElement
+): osmElement is Nominatim.OSMElement & { geojson: Polygon | MultiPolygon } {
+  return (
+    osmElement?.geojson?.type === 'Polygon' ||
+    osmElement?.geojson?.type === 'MultiPolygon'
   )
 }

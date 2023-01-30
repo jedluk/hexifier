@@ -14,6 +14,11 @@ export interface Polygon {
   coordinates: [number, number][][]
 }
 
+export interface MultiPolygon {
+  type: 'MultiPolygon'
+  coordinates: [number, number][][][]
+}
+
 export interface LineString {
   type: 'LineString'
   coordinates: [number, number][]
