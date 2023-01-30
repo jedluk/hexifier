@@ -1,39 +1,45 @@
 import MapboxDraw from '@mapbox/mapbox-gl-draw'
 import { useCallback, useRef, useState } from 'react'
 
-import { DrawnPolygon, GeoPolygon } from '../@types'
+import { areMarkers, arePolygons, toFlatCollection } from '../lib/feature'
+import { isNotNull } from '../lib/index'
+import { DrawnPolygon, GeoPolygon, Marker, Maybe } from '../types'
 
 interface Drawer {
+  marker: Maybe<Marker>
   features: Record<string, DrawnPolygon>
   draw: React.MutableRefObject<MapboxDraw>
   onMapUpdate: (event: { features: DrawnPolygon[] }) => void
-  onPopulate: (polygons: GeoPolygon[]) => void
-  onDelete: (polygon: DrawnPolygon) => void
+  onPopulatePolygons: (polygons: GeoPolygon[]) => void
+  onDeletePolygon: (polygon: DrawnPolygon) => void
+  onDeleteMarker: () => void
 }
 
 export function useDrawer(): Drawer {
   const [features, setFeatures] = useState<Record<string, DrawnPolygon>>({})
+  const [marker, setMarker] = useState<Maybe<Marker>>(null)
+
   const draw = useRef<MapboxDraw>(
     new MapboxDraw({
-      controls: { polygon: true },
-      defaultMode: 'draw_polygon',
+      controls: { point: true, polygon: true },
+      defaultMode: 'draw_point',
       displayControlsDefault: false
     })
   )
 
-  const onMapUpdate = useCallback((event: { features: DrawnPolygon[] }) => {
-    setFeatures((currFeatures) =>
-      event.features.reduce(
-        (acc, feature) => {
-          acc[feature.id] = feature
-          return acc
-        },
-        { ...currFeatures }
-      )
-    )
-  }, [])
+  const onMapUpdate = useCallback(
+    (event: { features: DrawnPolygon[] | Marker[] }) => {
+      const { features } = event
+      if (arePolygons(features)) {
+        setFeatures((currFeatures) => toFlatCollection(features, currFeatures))
+      } else if (areMarkers(features)) {
+        setMarker(features[0])
+      }
+    },
+    []
+  )
 
-  const onDelete = useCallback((polygon: DrawnPolygon) => {
+  const onDeletePolygon = useCallback((polygon: DrawnPolygon) => {
     setFeatures((currFeatures) =>
       Object.fromEntries(
         Object.entries(currFeatures).filter(([id]) => id !== polygon.id)
@@ -42,7 +48,7 @@ export function useDrawer(): Drawer {
     draw.current.delete(polygon.id)
   }, [])
 
-  const onPopulate = useCallback((polygons: GeoPolygon[]) => {
+  const onPopulatePolygons = useCallback((polygons: GeoPolygon[]) => {
     const features = polygons.map((polygon) => ({
       ...polygon,
       id: String(Date.now())
@@ -57,5 +63,22 @@ export function useDrawer(): Drawer {
     )
   }, [])
 
-  return { draw, features, onDelete, onMapUpdate, onPopulate }
+  const onDeleteMarker = useCallback(() => {
+    setMarker((prev) => {
+      if (isNotNull(prev)) {
+        draw.current.delete(prev.id)
+      }
+      return null
+    })
+  }, [])
+
+  return {
+    draw,
+    features,
+    marker,
+    onDeleteMarker,
+    onDeletePolygon,
+    onMapUpdate,
+    onPopulatePolygons
+  }
 }

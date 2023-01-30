@@ -10,7 +10,7 @@ export const CENTER_OF_EUROPE: Omit<ViewState, 'padding'> = {
 
 export const MAP_PADDING = {
   bottom: 10,
-  left: 384,
+  left: 380,
   right: 10,
   top: 40
 } as const

@@ -1,10 +1,10 @@
 import React from 'react'
 
-import { DrawnPolygon, GeoPolygon, HexCollection, Maybe } from '../../@types'
 import { RenderWhen } from '../../components/render-when/RenderWhen'
 import { Splitter } from '../../components/splitter/Splitter'
 import { Logo } from '../../components/svg'
 import { isEmpty, isNotEmpty } from '../../lib'
+import { DrawnPolygon, GeoPolygon, HexCollection, Maybe } from '../../types'
 import { PolygonDetails } from './PolygonDetails'
 import { Upload } from './Upload'
 

@@ -1,4 +1,4 @@
-import { JSObject, Maybe } from '../@types'
+import { JSObject, Maybe } from '../types'
 
 export function defaultsTo<T, S>(
   value: Maybe<T> | undefined,

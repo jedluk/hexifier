@@ -3,12 +3,14 @@ import maplibre from 'maplibre-gl'
 import React, { Fragment, useCallback, useRef, useState } from 'react'
 import MapGL, { MapRef, NavigationControl } from 'react-map-gl'
 
-import { BBox, DrawnPolygon, GeoPolygon, HexCollection, Maybe } from './@types'
 import { useDrawer } from './hooks/useDrawer'
 import { useMapMouseEvent } from './hooks/useMapMouseEvent'
 import { serveFromBase } from './lib/asset'
 import { CENTER_OF_EUROPE, MAP_PADDING } from './lib/constants'
+import { isNotNull } from './lib/index'
+import { BBox, DrawnPolygon, GeoPolygon, HexCollection, Maybe } from './types'
 import { DrawControl } from './views/map/DrawControl'
+import { GeocoderBubble } from './views/map/GeocoderBubble'
 import { HexArea } from './views/map/HexArea'
 import { HexMarker } from './views/map/HexMarker'
 import { Names } from './views/map/Names'
@@ -16,27 +18,41 @@ import { Panel } from './views/panel/Panel'
 
 export function App() {
   const mapRef = useRef<Maybe<MapRef>>(null)
-
   const [hexCollection, setHexCollection] = useState<Maybe<HexCollection>>(null)
 
-  const { draw, features, onMapUpdate, onPopulate, onDelete } = useDrawer()
+  const {
+    draw,
+    marker: draggableMarker,
+    features,
+    onMapUpdate,
+    onPopulatePolygons,
+    onDeleteMarker,
+    onDeletePolygon
+  } = useDrawer()
 
-  const { marker, interactiveLayers, handleMouseMove, handleMouseLeave } =
-    useMapMouseEvent(mapRef.current, hexCollection)
+  const {
+    marker: hexMarker,
+    interactiveLayers,
+    handleMouseMove,
+    handleMouseLeave
+  } = useMapMouseEvent(mapRef.current, hexCollection)
 
   const handleZoomToPolygon = useCallback(
-    (polygon: DrawnPolygon | GeoPolygon) => {
-      mapRef.current?.fitBounds(bbox(polygon) as BBox)
+    (
+      polygon: DrawnPolygon | GeoPolygon,
+      options?: mapboxgl.FitBoundsOptions
+    ) => {
+      mapRef.current?.fitBounds(bbox(polygon) as BBox, options)
     },
     []
   )
 
   const handleAddPolygons = useCallback(
     (polygons: GeoPolygon[]) => {
-      onPopulate(polygons)
+      onPopulatePolygons(polygons)
       handleZoomToPolygon(polygons[0])
     },
-    [onPopulate, handleZoomToPolygon]
+    [onPopulatePolygons, handleZoomToPolygon]
   )
 
   const polygons = Object.values(features)
@@ -46,7 +62,7 @@ export function App() {
       <Panel
         polygons={polygons}
         onAddHexCollection={setHexCollection}
-        onDeletePolygon={onDelete}
+        onDeletePolygon={onDeletePolygon}
         onAddPolygons={handleAddPolygons}
         onZoomToPolygon={handleZoomToPolygon}
       />
@@ -71,7 +87,15 @@ export function App() {
             onUpdate={onMapUpdate}
           />
           <HexArea collection={hexCollection} />
-          <HexMarker marker={marker} />
+          <HexMarker marker={hexMarker} />
+          {isNotNull(draggableMarker) && (
+            <GeocoderBubble
+              marker={draggableMarker}
+              onAddPolygon={handleAddPolygons}
+              onDeleteMarker={onDeleteMarker}
+              onZoom={handleZoomToPolygon}
+            />
+          )}
           <Names polygons={polygons} />
         </MapGL>
       </main>

@@ -9,13 +9,13 @@ import React, {
   useState
 } from 'react'
 
-import { DrawnPolygon, HexCollection, Maybe } from '../../@types'
 import { Button } from '../../components/button/Button'
 import { RenderWhen } from '../../components/render-when/RenderWhen'
 import { Splitter } from '../../components/splitter/Splitter'
 import { Area } from '../../components/svg'
 import { formatNumber } from '../../lib/formatter'
 import { toGeoJSONCollection } from '../../lib/hexes'
+import { DrawnPolygon, HexCollection, Maybe } from '../../types'
 import { PolygonDownload } from './PolygonDownload'
 import { Selector } from './Selector'
 import { Shape } from './Shape'

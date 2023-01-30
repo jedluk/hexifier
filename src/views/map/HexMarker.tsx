@@ -1,8 +1,8 @@
 import React from 'react'
 import { Marker } from 'react-map-gl'
 
-import { HexMarker as HexMarkerType, Maybe } from '../../@types'
 import { isNull } from '../../lib/index'
+import { HexMarker as HexMarkerType, Maybe } from '../../types'
 
 interface HexMarkerProps {
   marker: Maybe<HexMarkerType>

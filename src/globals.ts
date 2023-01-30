@@ -1,3 +1,10 @@
+export function fetch(
+  input: RequestInfo,
+  init?: RequestInit
+): Promise<Response> {
+  return window.fetch(input, init)
+}
+
 export function createObjectURL(object: Blob): string {
   return window.URL.createObjectURL(object)
 }

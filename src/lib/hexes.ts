@@ -1,6 +1,6 @@
 import { cellToBoundary } from 'h3-js'
 
-import { HexCollection } from '../@types'
+import { HexCollection } from '../types'
 
 export function toGeoJSONCollection(hexes: string[]): HexCollection {
   return {

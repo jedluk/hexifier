@@ -14,6 +14,11 @@ export interface Polygon {
   coordinates: [number, number][][]
 }
 
+export interface MultiPolygon {
+  type: 'MultiPolygon'
+  coordinates: [number, number][][][]
+}
+
 export interface LineString {
   type: 'LineString'
   coordinates: [number, number][]
@@ -55,6 +60,8 @@ export type GeoPolygonCollection = FeatureCollection<
 export interface DrawnPolygon extends GeoPolygon {
   id: string
 }
+
+export type Marker = Feature<Point> & { id: string }
 
 export interface HexMarker {
   lat: number
