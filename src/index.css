@@ -10,4 +10,10 @@
 
 .mapboxgl-ctrl-group button.active {
     background-color: rgb(0 0 0/5%);
-}   
+}
+
+.maplibregl-popup-close-button {
+    width: 20px;
+    height: 20px;
+    text-align: center;
+}
