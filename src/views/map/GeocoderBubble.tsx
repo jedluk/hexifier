@@ -1,4 +1,10 @@
-import React, { Fragment, useCallback, useMemo, useState } from 'react'
+import React, {
+  Fragment,
+  useCallback,
+  useEffect,
+  useMemo,
+  useState
+} from 'react'
 import { Layer, Popup, Source } from 'react-map-gl'
 import { useQuery } from 'react-query'
 
@@ -9,7 +15,7 @@ import { RenderWhen } from '../../components/render-when/RenderWhen'
 import { Splitter } from '../../components/splitter/Splitter'
 import { MAP_PADDING } from '../../lib/constants'
 import { findLocationOnTop } from '../../lib/geo'
-import { isNotNull } from '../../lib/index'
+import { isNotNull, isNotUndefined } from '../../lib/index'
 import { GeoPolygon, Marker, Maybe } from '../../types'
 import { Nominatim } from '../../types/nominatim'
 import { ZoomSelector } from './ZoomSelector'
@@ -28,18 +34,6 @@ export function GeocoderBubble(props: GeocoderBubbleProps) {
   const [osmElement, setOSMElement] =
     useState<Maybe<Nominatim.OSMElement>>(null)
   const [zoom, setZoom] = useState(10)
-
-  const { isLoading } = useQuery({
-    onSuccess(osmElement) {
-      setOSMElement(osmElement)
-      onZoom(osmElement.geojson as unknown as GeoPolygon, {
-        padding: { ...MAP_PADDING, right: 200, top: 200 }
-      })
-    },
-    queryFn: () => reverseGeocode(lat, lon, zoom),
-    queryKey: ['reverseGeocode', { lat, lon, zoom }],
-    staleTime: Infinity
-  })
 
   const handleAddPolygon = useCallback(() => {
     if (isNotNull(osmElement)) {
@@ -71,6 +65,22 @@ export function GeocoderBubble(props: GeocoderBubbleProps) {
     }
     return marker.geometry.coordinates
   }, [marker, osmElement])
+
+  const { data, isLoading } = useQuery({
+    keepPreviousData: false,
+    queryFn: () => reverseGeocode(lat, lon, zoom),
+    queryKey: ['reverseGeocode', { lat, lon, zoom }],
+    staleTime: Infinity
+  })
+
+  useEffect(() => {
+    if (isNotUndefined(data)) {
+      setOSMElement(data)
+      onZoom(data.geojson as unknown as GeoPolygon, {
+        padding: { ...MAP_PADDING, right: 200, top: 200 }
+      })
+    }
+  }, [data, onZoom])
 
   return (
     <Fragment>

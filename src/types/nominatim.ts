@@ -9,6 +9,10 @@ export namespace Nominatim {
         type: 'Polygon'
         coordinates: [number, number][][]
       }
+    | {
+        type: 'Point'
+        ccoordinates: [number, number]
+      }
 
   export interface AddressDetails {
     house_number?: string
