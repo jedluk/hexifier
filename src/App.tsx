@@ -9,8 +9,8 @@ import { serveFromBase } from './lib/asset'
 import { CENTER_OF_EUROPE, MAP_PADDING } from './lib/constants'
 import { isNotNull } from './lib/index'
 import { BBox, DrawnPolygon, GeoPolygon, HexCollection, Maybe } from './types'
-import { DraggableMarker } from './views/map/DraggableMarker'
 import { DrawControl } from './views/map/DrawControl'
+import { GeocoderBubble } from './views/map/GeocoderBubble'
 import { HexArea } from './views/map/HexArea'
 import { HexMarker } from './views/map/HexMarker'
 import { Names } from './views/map/Names'
@@ -18,7 +18,6 @@ import { Panel } from './views/panel/Panel'
 
 export function App() {
   const mapRef = useRef<Maybe<MapRef>>(null)
-
   const [hexCollection, setHexCollection] = useState<Maybe<HexCollection>>(null)
 
   const {
@@ -90,7 +89,7 @@ export function App() {
           <HexArea collection={hexCollection} />
           <HexMarker marker={hexMarker} />
           {isNotNull(draggableMarker) && (
-            <DraggableMarker
+            <GeocoderBubble
               marker={draggableMarker}
               onAddPolygon={handleAddPolygons}
               onDeleteMarker={onDeleteMarker}

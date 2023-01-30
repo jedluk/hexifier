@@ -1,11 +1,6 @@
-import React, {
-  Fragment,
-  useCallback,
-  useEffect,
-  useMemo,
-  useState
-} from 'react'
+import React, { Fragment, useCallback, useMemo, useState } from 'react'
 import { Layer, Popup, Source } from 'react-map-gl'
+import { useQuery } from 'react-query'
 
 import { reverseGeocode } from '../../apis/nominatim'
 import { Button } from '../../components/button/Button'
@@ -14,24 +9,37 @@ import { RenderWhen } from '../../components/render-when/RenderWhen'
 import { Splitter } from '../../components/splitter/Splitter'
 import { MAP_PADDING } from '../../lib/constants'
 import { findLocationOnTop } from '../../lib/geo'
-import { isNotNull, isNull } from '../../lib/index'
+import { isNotNull } from '../../lib/index'
 import { GeoPolygon, Marker, Maybe } from '../../types'
 import { Nominatim } from '../../types/nominatim'
 import { ZoomSelector } from './ZoomSelector'
 
-interface DraggableMarkerProps {
+interface GeocoderBubbleProps {
   marker: Marker
   onAddPolygon: (polygons: GeoPolygon[]) => void
   onZoom: (polygon: GeoPolygon, options?: mapboxgl.FitBoundsOptions) => void
   onDeleteMarker: () => void
 }
 
-export function DraggableMarker(props: DraggableMarkerProps) {
+export function GeocoderBubble(props: GeocoderBubbleProps) {
   const { marker, onZoom, onAddPolygon, onDeleteMarker } = props
+  const [lon, lat] = marker.geometry.coordinates
 
   const [osmElement, setOSMElement] =
     useState<Maybe<Nominatim.OSMElement>>(null)
   const [zoom, setZoom] = useState(10)
+
+  const { isLoading } = useQuery({
+    onSuccess(osmElement) {
+      setOSMElement(osmElement)
+      onZoom(osmElement.geojson as unknown as GeoPolygon, {
+        padding: { ...MAP_PADDING, right: 200, top: 160 }
+      })
+    },
+    queryFn: () => reverseGeocode(lat, lon, zoom),
+    queryKey: ['reverseGeocode', { lat, lon, zoom }],
+    staleTime: Infinity
+  })
 
   const handleAddPolygon = useCallback(() => {
     if (isNotNull(osmElement)) {
@@ -64,21 +72,6 @@ export function DraggableMarker(props: DraggableMarkerProps) {
     return marker.geometry.coordinates
   }, [marker, osmElement])
 
-  useEffect(() => {
-    const [lon, lat] = marker.geometry.coordinates
-    reverseGeocode(lat, lon, zoom)
-      .then((response) => setOSMElement(response))
-      .catch((err) => console.error(err))
-  }, [marker, zoom])
-
-  useEffect(() => {
-    if (isNotNull(osmElement)) {
-      onZoom(osmElement.geojson as unknown as GeoPolygon, {
-        padding: { ...MAP_PADDING, right: 200, top: 160 }
-      })
-    }
-  }, [onZoom, osmElement])
-
   return (
     <Fragment>
       <Popup
@@ -88,7 +81,7 @@ export function DraggableMarker(props: DraggableMarkerProps) {
         onClose={props.onDeleteMarker}
         anchor="bottom"
       >
-        <RenderWhen condition={isNull(osmElement)}>
+        <RenderWhen condition={isLoading}>
           <span className="blur-sm">{'blurry text'.repeat(5)}</span>
         </RenderWhen>
         {isNotNull(osmElement) && (
