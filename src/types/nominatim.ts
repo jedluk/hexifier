@@ -1,9 +1,14 @@
 /* eslint-disable @typescript-eslint/no-namespace */
 export namespace Nominatim {
-  interface Geojson {
-    type: 'Polygon'
-    coordinates: [number, number][][]
-  }
+  type NominatimGeoJSON =
+    | {
+        type: 'MultiPolygon'
+        coordinates: [number, number][][][]
+      }
+    | {
+        type: 'Polygon'
+        coordinates: [number, number][][]
+      }
 
   export interface AddressDetails {
     house_number?: string
@@ -30,6 +35,6 @@ export namespace Nominatim {
     address: AddressDetails
     importance: number
     addresstype: string
-    geojson: Geojson
+    geojson: NominatimGeoJSON
   }
 }

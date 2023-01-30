@@ -56,7 +56,7 @@ export interface DrawnPolygon extends GeoPolygon {
   id: string
 }
 
-export type Marker = Feature<Point>
+export type Marker = Feature<Point> & { id: string }
 
 export interface HexMarker {
   lat: number
