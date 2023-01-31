@@ -52,7 +52,7 @@ export function Panel(props: PanelProps) {
       <RenderWhen condition={isNotEmpty(polygons)}>
         <div
           className={joinClassNames(
-            'max-h-72 md:grow overflow-y-auto mt-5',
+            'sm:max-h-72 md:max-h-fit md:grow overflow-y-auto mt-5',
             menuClass
           )}
         >
