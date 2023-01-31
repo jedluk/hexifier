@@ -82,16 +82,22 @@ export function PolygonDetails(props: PolygonDetailsProps) {
         <b>~ {formatNumber(polygonAreaInSquareKm)} km²</b>
       </div>
 
-      <Selector
-        polygonArea={polygonAreaInSquareKm}
-        hexSize={hexSize}
-        onSetMinSize={setMinSize}
-        onChange={setHexSize}
-      />
+      <label
+        htmlFor="hexSize"
+        className="block mt-4 text-sm font-medium text-gray-900"
+      >
+        Output hex size:
+      </label>
 
-      <div className="my-2 flex justify-end">
+      <div className="my-2 flex justify-between md:justify-end md:flex-wrap md:gap-3">
+        <Selector
+          polygonArea={polygonAreaInSquareKm}
+          hexSize={hexSize}
+          onSetMinSize={setMinSize}
+          onChange={setHexSize}
+        />
         <Button
-          className="ml-auto mr-2"
+          className="sm:w-1/6 md:w-fit"
           secondary
           text="remove"
           onClick={onDelete}
@@ -99,7 +105,7 @@ export function PolygonDetails(props: PolygonDetailsProps) {
 
         <Button
           text="Convert"
-          className="mr-2"
+          className="sm:w-1/6 md:w-fit"
           onClick={handleConvertToHexGeoJSON}
         />
       </div>
