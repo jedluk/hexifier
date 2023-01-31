@@ -10,6 +10,7 @@ import React, {
 } from 'react'
 
 import { Button } from '../../components/button/Button'
+import { Link } from '../../components/link/Link'
 import { RenderWhen } from '../../components/render-when/RenderWhen'
 import { Splitter } from '../../components/splitter/Splitter'
 import { Area } from '../../components/svg'
@@ -32,7 +33,9 @@ interface PolygonDetailsProps {
 
 export function PolygonDetails(props: PolygonDetailsProps) {
   const headerRef = useRef<HTMLDivElement>(null)
+
   const [hexes, setHexes] = useState<string[]>(NO_HEXES)
+  const [isExportAsBigInt, setExportAsBigInt] = useState(false)
   const [hexSize, setHexSize] = useState(-1)
   const [minSize, setMinSize] = useState(-1)
 
@@ -80,6 +83,11 @@ export function PolygonDetails(props: PolygonDetailsProps) {
 
       <div className="text-center text-sm mt-2">
         <b>~ {formatNumber(polygonAreaInSquareKm)} km²</b>
+        {!Object.is(hexes, NO_HEXES) && (
+          <div className="text-sm mt-2">
+            Polygon is covered by <strong>{hexes?.length}</strong> hexes
+          </div>
+        )}
       </div>
 
       <label
@@ -111,14 +119,37 @@ export function PolygonDetails(props: PolygonDetailsProps) {
       </div>
 
       <RenderWhen condition={!Object.is(hexes, NO_HEXES)}>
-        <div className="text-sm mt-2">
-          Polygon is covered by <strong>{hexes?.length}</strong> hexes
+        <Splitter size="sm" />
+        <div className="p-1">
+          <div>Export options:</div>
+
+          <div className="flex items-center mb-4">
+            <input
+              id="checkbox"
+              type="checkbox"
+              checked={isExportAsBigInt}
+              onChange={() => setExportAsBigInt((prev) => !prev)}
+              className="w-4 h-4 bg-gray-100 border-gray-300 rounded text-blue-600 focus:ring-blue-500 focus:ring-2"
+            />
+            <label
+              htmlFor="checkbox"
+              className="ml-2 text-sm font-medium text-gray-900"
+            >
+              convert hexadecimal to
+              <Link
+                text="big int"
+                url="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/BigInt"
+              />
+            </label>
+          </div>
+
+          <PolygonDownload
+            hexes={hexes}
+            exportAsBigInt={isExportAsBigInt}
+            name={`polygon-${index + 1}`}
+            size={hexSize}
+          />
         </div>
-        <PolygonDownload
-          hexes={hexes}
-          name={`polygon-${index + 1}`}
-          size={hexSize}
-        />
       </RenderWhen>
 
       <Splitter size="md" />

@@ -5,17 +5,20 @@ import { useExportablePlainText } from '../../hooks/useExportablePlainText'
 
 interface PolygonDownloadProps {
   name: string
+  exportAsBigInt: boolean
   size: number
   hexes: string[]
 }
 
 export function PolygonDownload(props: PolygonDownloadProps) {
-  const { hexes, name, size } = props
+  const { hexes, name, size, exportAsBigInt } = props
 
-  const [csvContent, textContent] = useMemo(
-    () => [hexes.map((hex) => [hex]), hexes.join(',')],
-    [hexes]
-  )
+  const [csvContent, textContent] = useMemo(() => {
+    const formattedHexes = exportAsBigInt
+      ? hexes.map((hex) => BigInt('0x' + hex))
+      : hexes
+    return [formattedHexes.map((hex) => [hex]), formattedHexes.join(',')]
+  }, [hexes, exportAsBigInt])
 
   const csvLink = useExportableCSV(csvContent, {
     bom: true,

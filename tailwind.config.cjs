@@ -21,5 +21,5 @@ module.exports = {
       }
     }
   },
-  plugins: [rotateX]
+  plugins: [rotateX, require('@tailwindcss/forms')]
 }
