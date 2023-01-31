@@ -29,7 +29,7 @@ export function Panel(props: PanelProps) {
     onAddHexCollection
   } = props
 
-  const menuClass = isMobileMenuHidden ? 'sm:hidden md:block' : ''
+  const menuClass = isMobileMenuHidden ? 'hidden md:block' : ''
 
   return (
     <aside className="absolute top-0 left-0 w-full md:w-96 z-10 border-r-2 border-neutral-200 md:h-full p-2 bg-white flex flex-col">
