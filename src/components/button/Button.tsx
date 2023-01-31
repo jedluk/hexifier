@@ -13,13 +13,13 @@ export function Button(props: ButtonProps) {
   const { text, onClick, secondary = false } = props
 
   const customClasses = secondary
-    ? 'text-red-700 border border-red-700'
+    ? 'text-rose-700 border border-rose-700 hover:border-rose-800'
     : 'bg-emerald-400 hover:bg-emerald-500 text-neutral-100'
 
   return (
     <button
       className={joinClassNames(
-        'w-fit text-center rounded-lg p-1 hover:font-bold ease-in-out duration-300',
+        'w-fit text-center rounded-lg p-1 ease-in-out duration-300',
         customClasses,
         props.className
       )}
