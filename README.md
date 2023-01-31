@@ -11,4 +11,4 @@
  - select hex size from a list (max available size is calculated based on area of drawn polygon. Due to perfomance reasons number of resulting hexes has to be less than 100_000)
  - 'compact' option is also available (minimum number of mixed size hexes to cover area with high accuracy)
  - convert
- - export & enjoy
+ - export (CSV or plain text, hexadecimal or BigInt) & enjoy
