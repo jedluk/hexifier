@@ -28,10 +28,12 @@ type MapPadding =
   | typeof SMALL_SCREEN_MAP_PADDING
   | typeof MEDIUM_SCREEN_MAP_PADDING
 
-export function getMapPadding(): MapPadding {
+export function isMobileScreen(): boolean {
   return matchMedia('(max-width: 768px)').matches
-    ? SMALL_SCREEN_MAP_PADDING
-    : MEDIUM_SCREEN_MAP_PADDING
+}
+
+export function getMapPadding(): MapPadding {
+  return isMobileScreen() ? SMALL_SCREEN_MAP_PADDING : MEDIUM_SCREEN_MAP_PADDING
 }
 
 export const HEX_AREA_SQUARE_KM = Object.freeze({
