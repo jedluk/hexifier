@@ -97,7 +97,7 @@ export function PolygonDetails(props: PolygonDetailsProps) {
           onChange={setHexSize}
         />
         <Button
-          className="sm:w-1/6 md:w-fit"
+          className="w-1/6 md:w-fit"
           secondary
           text="remove"
           onClick={onDelete}
@@ -105,7 +105,7 @@ export function PolygonDetails(props: PolygonDetailsProps) {
 
         <Button
           text="Convert"
-          className="sm:w-1/6 md:w-fit"
+          className="w-1/6 md:w-fit"
           onClick={handleConvertToHexGeoJSON}
         />
       </div>
