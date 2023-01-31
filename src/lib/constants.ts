@@ -24,10 +24,11 @@ const MEDIUM_SCREEN_MAP_PADDING = {
   top: 40
 } as const
 
-export function getMapPadding(): Record<
-  'left' | 'top' | 'right' | 'bottom',
-  number
-> {
+type MapPadding =
+  | typeof SMALL_SCREEN_MAP_PADDING
+  | typeof MEDIUM_SCREEN_MAP_PADDING
+
+export function getMapPadding(): MapPadding {
   return matchMedia('(max-width: 768px)').matches
     ? SMALL_SCREEN_MAP_PADDING
     : MEDIUM_SCREEN_MAP_PADDING
