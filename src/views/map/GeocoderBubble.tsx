@@ -13,7 +13,7 @@ import { Button } from '../../components/button/Button'
 import { Link } from '../../components/link/Link'
 import { RenderWhen } from '../../components/render-when/RenderWhen'
 import { Splitter } from '../../components/splitter/Splitter'
-import { MAP_PADDING } from '../../lib/constants'
+import { getMapPadding } from '../../lib/constants'
 import { isPolygonLike } from '../../lib/feature'
 import { findLocationOnTop } from '../../lib/geo'
 import { isNotUndefined } from '../../lib/index'
@@ -76,7 +76,7 @@ export function GeocoderBubble(props: GeocoderBubbleProps) {
   useEffect(() => {
     if (isPolygonLike(osmElement)) {
       onZoom(osmElement.geojson as unknown as GeoPolygon, {
-        padding: { ...MAP_PADDING, right: 200, top: 200 }
+        padding: { ...getMapPadding(), right: 200, top: 200 }
       })
     }
   }, [osmElement, onZoom])

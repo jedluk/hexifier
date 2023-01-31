@@ -29,7 +29,7 @@ export function Shape(props: ShapeProps) {
 
   return (
     <div
-      className="grow my-2 px-10 rotate-X-180"
+      className="grow sm:mx-auto w-64 md:w-full text-center my-2 px-10 rotate-X-180"
       dangerouslySetInnerHTML={{ __html: paths }}
     />
   )

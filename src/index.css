@@ -18,8 +18,8 @@
     text-align: center;
 }
 
-@media only screen and (max-width: 640px) {
-    div.maplibregl-ctrl-top-right {
+@media only screen and (max-width: 768px) {
+    div.maplibregl-control-container div.maplibregl-ctrl-top-right {
         top: 65px;
     }
 }
