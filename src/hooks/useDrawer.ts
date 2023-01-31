@@ -22,7 +22,7 @@ export function useDrawer(): Drawer {
   const draw = useRef<MapboxDraw>(
     new MapboxDraw({
       controls: { point: true, polygon: true },
-      defaultMode: 'draw_point',
+      defaultMode: 'draw_polygon',
       displayControlsDefault: false
     })
   )

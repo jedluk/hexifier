@@ -22,4 +22,8 @@ export function setTimeout(handler: Function, timeout: number): void {
   window.setTimeout(handler, timeout)
 }
 
+export function matchMedia(query: string): MediaQueryList {
+  return window.matchMedia(query)
+}
+
 export const locale = window.navigator.language

@@ -1,4 +1,4 @@
-import React, { Fragment, useEffect, useMemo } from 'react'
+import React, { useEffect, useMemo } from 'react'
 
 import { keys } from '../../lib'
 import { HEX_AREA_SQUARE_KM } from '../../lib/constants'
@@ -31,26 +31,18 @@ export function Selector(props: SelectorProps) {
   }, [options, onSetMinSize, onChange])
 
   return (
-    <Fragment>
-      <label
-        htmlFor="hexSize"
-        className="block mt-4 text-sm font-medium text-gray-900"
-      >
-        Output hex size:
-      </label>
-      <select
-        value={hexSize}
-        id="hexSize"
-        onChange={(evt) => onChange(Number(evt.target.value))}
-        className="w-full bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-50 p-2.5"
-      >
-        {options.map((hexSize) => (
-          <option key={hexSize} value={hexSize}>
-            {hexSize} ({formatNumber(HEX_AREA_SQUARE_KM[hexSize])} km²)
-          </option>
-        ))}
-        <option value={Math.PI}>compact</option>
-      </select>
-    </Fragment>
+    <select
+      value={hexSize}
+      id="hexSize"
+      onChange={(evt) => onChange(Number(evt.target.value))}
+      className="w-7/12 md:w-full mr-4 md:mr-0 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-50 p-2.5"
+    >
+      {options.map((hexSize) => (
+        <option key={hexSize} value={hexSize}>
+          {hexSize} ({formatNumber(HEX_AREA_SQUARE_KM[hexSize])} km²)
+        </option>
+      ))}
+      <option value={Math.PI}>compact</option>
+    </select>
   )
 }

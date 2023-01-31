@@ -6,7 +6,7 @@ import MapGL, { MapRef, NavigationControl } from 'react-map-gl'
 import { useDrawer } from './hooks/useDrawer'
 import { useMapMouseEvent } from './hooks/useMapMouseEvent'
 import { serveFromBase } from './lib/asset'
-import { CENTER_OF_EUROPE, MAP_PADDING } from './lib/constants'
+import { CENTER_OF_EUROPE, getMapPadding } from './lib/constants'
 import { isNotNull } from './lib/index'
 import { BBox, DrawnPolygon, GeoPolygon, HexCollection, Maybe } from './types'
 import { DrawControl } from './views/map/DrawControl'
@@ -74,7 +74,7 @@ export function App() {
           maxZoom={19}
           dragRotate={false}
           mapStyle={serveFromBase('mapStyle.json')}
-          padding={MAP_PADDING}
+          padding={getMapPadding()}
           initialViewState={CENTER_OF_EUROPE}
           interactiveLayerIds={interactiveLayers}
           onMouseMove={handleMouseMove}

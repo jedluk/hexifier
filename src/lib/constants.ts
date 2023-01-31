@@ -1,5 +1,7 @@
 import { ViewState } from 'react-map-gl'
 
+import { matchMedia } from '../globals'
+
 export const CENTER_OF_EUROPE: Omit<ViewState, 'padding'> = {
   bearing: 0,
   latitude: 50,
@@ -8,12 +10,29 @@ export const CENTER_OF_EUROPE: Omit<ViewState, 'padding'> = {
   zoom: 4
 }
 
-export const MAP_PADDING = {
+const SMALL_SCREEN_MAP_PADDING = {
+  bottom: 10,
+  left: 10,
+  right: 10,
+  top: 100
+} as const
+
+const MEDIUM_SCREEN_MAP_PADDING = {
   bottom: 10,
   left: 380,
   right: 10,
   top: 40
 } as const
+
+type MapPadding =
+  | typeof SMALL_SCREEN_MAP_PADDING
+  | typeof MEDIUM_SCREEN_MAP_PADDING
+
+export function getMapPadding(): MapPadding {
+  return matchMedia('(max-width: 768px)').matches
+    ? SMALL_SCREEN_MAP_PADDING
+    : MEDIUM_SCREEN_MAP_PADDING
+}
 
 export const HEX_AREA_SQUARE_KM = Object.freeze({
   '0': 4_357_449.416078381,
