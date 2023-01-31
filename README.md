@@ -1,6 +1,6 @@
 ![Hexifier](https://raw.githubusercontent.com/jedluk/hexifier/main/src/components/svg/logo.svg)
 
-[Web app](https://jedluk.github.io/hexifier/) for easy geojson <=> H3 conversion and more.
+[Web app](https://jedluk.github.io/hexifier/) for easy geojson <=> H3 conversion and more. Works for both desktop & mobile.
 
 ![Screen](https://raw.githubusercontent.com//jedluk/random/master/hexifier/hexifier.png)
 
