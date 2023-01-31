@@ -35,7 +35,7 @@ export function Selector(props: SelectorProps) {
       value={hexSize}
       id="hexSize"
       onChange={(evt) => onChange(Number(evt.target.value))}
-      className="w-7/12 md:w-full mr-4 md:mr-0 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-50 p-2.5"
+      className="w-7/12 md:w-full bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-50 p-2.5"
     >
       {options.map((hexSize) => (
         <option key={hexSize} value={hexSize}>
