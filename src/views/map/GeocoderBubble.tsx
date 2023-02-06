@@ -15,7 +15,7 @@ import { RenderWhen } from '../../components/render-when/RenderWhen'
 import { Splitter } from '../../components/splitter/Splitter'
 import { getMapPadding, isMobileScreen } from '../../lib/constants'
 import { isPolygonLike } from '../../lib/feature'
-import { findLocationOnTop } from '../../lib/geo'
+import { findBiggest, findLocationOnTop } from '../../lib/geo'
 import { isNotUndefined } from '../../lib/index'
 import { GeoPolygon, Marker } from '../../types'
 import { ZoomSelector } from './ZoomSelector'
@@ -48,7 +48,7 @@ export function GeocoderBubble(props: GeocoderBubbleProps) {
         geometry: {
           coordinates:
             geojson.type === 'MultiPolygon'
-              ? geojson.coordinates[0]
+              ? findBiggest(geojson.coordinates)
               : geojson.coordinates,
           type: 'Polygon'
         },
@@ -66,7 +66,7 @@ export function GeocoderBubble(props: GeocoderBubbleProps) {
       const { type } = osmElement.geojson
       return findLocationOnTop(
         type === 'MultiPolygon'
-          ? osmElement.geojson.coordinates[0][0]
+          ? findBiggest(osmElement.geojson.coordinates)[0]
           : osmElement.geojson.coordinates[0]
       )
     }

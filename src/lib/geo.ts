@@ -1,8 +1,27 @@
+import area from '@turf/area'
+
+import { Polygon } from '../types/index'
+
 export function findLocationOnTop(
   coordinates: [number, number][]
 ): [number, number] {
   const latitudes = coordinates.map((loc) => loc[1])
   return coordinates[latitudes.indexOf(Math.max(...latitudes))]
+}
+
+function toPolygonGeoJSON(coordinates: [number, number][][]): Polygon {
+  return { coordinates, type: 'Polygon' }
+}
+export function findBiggest(
+  multiPolygon: [number, number][][][]
+): [number, number][][] {
+  return multiPolygon.reduce(
+    (biggest, polygon) =>
+      area(toPolygonGeoJSON(polygon)) > area(toPolygonGeoJSON(biggest))
+        ? polygon
+        : biggest,
+    multiPolygon[0]
+  )
 }
 
 export function mapAreaToSVGWidth(areaInSquareMeters: number): number {
