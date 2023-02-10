@@ -2,7 +2,7 @@ import { useCallback, useEffect, useRef, useState } from 'react'
 import { MapRef } from 'react-map-gl'
 
 import { isEmpty, isNotEmpty, isNotNull } from '../lib/index'
-import { HexCollection, HexMarker, Maybe } from '../types'
+import { DrawnPolygon, HexCollection, HexMarker, Maybe } from '../types'
 
 interface MapMouseEvent {
   marker: Maybe<HexMarker>
@@ -12,12 +12,17 @@ interface MapMouseEvent {
 }
 export function useMapMouseEvent(
   map: Maybe<MapRef>,
-  hexCollection: Maybe<HexCollection>
+  hexCollection: Maybe<HexCollection>,
+  features: Record<string, DrawnPolygon>
 ): MapMouseEvent {
   const hoveredStateId = useRef<Maybe<number>>(null)
 
   const [marker, setHexMarker] = useState<Maybe<HexMarker>>(null)
   const [interactiveLayers, setInteractiveLayers] = useState<string[]>([])
+
+  useEffect(() => {
+    setHexMarker(null)
+  }, [features])
 
   useEffect(() => {
     if (isNotNull(hexCollection)) {
