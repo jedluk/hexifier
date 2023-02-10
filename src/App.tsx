@@ -10,6 +10,7 @@ import { CENTER_OF_EUROPE, getMapPadding } from './lib/constants'
 import { isNotNull } from './lib/index'
 import { BBox, DrawnPolygon, GeoPolygon, HexCollection, Maybe } from './types'
 import { DrawControl } from './views/map/DrawControl'
+import { DumpButtonWrapper } from './views/map/DumpButtonWrappers'
 import { GeocoderBubble } from './views/map/GeocoderBubble'
 import { HexArea } from './views/map/HexArea'
 import { HexMarker } from './views/map/HexMarker'
@@ -80,6 +81,7 @@ export function App() {
           onMouseMove={handleMouseMove}
           onMouseLeave={handleMouseLeave}
         >
+          <DumpButtonWrapper />
           <NavigationControl showCompass={false} position="top-right" />
           <DrawControl
             draw={draw}
