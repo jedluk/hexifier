@@ -67,9 +67,9 @@ export function App() {
           bounds.getEast(),
           bounds.getNorth()
         ],
-        { id: Date.now() }
-      ) as GeoPolygon
-      onPopulatePolygons([polygon], true)
+        { id: String(Date.now()) }
+      )
+      onPopulatePolygons([polygon as GeoPolygon], true)
     }
   }, [onPopulatePolygons])
 
