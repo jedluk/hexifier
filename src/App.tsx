@@ -7,7 +7,11 @@ import MapGL, { MapRef, NavigationControl } from 'react-map-gl'
 import { useDrawer } from './hooks/useDrawer'
 import { useMapMouseEvent } from './hooks/useMapMouseEvent'
 import { serveFromBase } from './lib/asset'
-import { CENTER_OF_EUROPE, getMapPadding } from './lib/constants'
+import {
+  CENTER_OF_EUROPE,
+  getMapPadding,
+  getSidebarRatio
+} from './lib/constants'
 import { isNotNull, isNotUndefined } from './lib/index'
 import { BBox, DrawnPolygon, GeoPolygon, HexCollection, Maybe } from './types'
 import { DrawControl } from './views/map/DrawControl'
@@ -62,7 +66,8 @@ export function App() {
     if (isNotUndefined(bounds)) {
       const polygon = bboxPolygon(
         [
-          bounds.getWest(),
+          bounds.getWest() +
+            getSidebarRatio() * (bounds.getEast() - bounds.getWest()),
           bounds.getSouth(),
           bounds.getEast(),
           bounds.getNorth()
