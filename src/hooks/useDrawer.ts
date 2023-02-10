@@ -10,7 +10,10 @@ interface Drawer {
   features: Record<string, DrawnPolygon>
   draw: React.MutableRefObject<MapboxDraw>
   onMapUpdate: (event: { features: DrawnPolygon[] }) => void
-  onPopulatePolygons: (polygons: GeoPolygon[]) => void
+  onPopulatePolygons: (
+    polygons: GeoPolygon[],
+    mergeWithCurrent?: boolean
+  ) => void
   onDeletePolygon: (polygon: DrawnPolygon) => void
   onDeleteMarker: () => void
 }
@@ -48,20 +51,26 @@ export function useDrawer(): Drawer {
     draw.current.delete(polygon.id)
   }, [])
 
-  const onPopulatePolygons = useCallback((polygons: GeoPolygon[]) => {
-    const features = polygons.map((polygon) => ({
-      ...polygon,
-      id: String(Date.now())
-    }))
+  const onPopulatePolygons = useCallback(
+    (polygons: GeoPolygon[], mergeWithCurrent = false) => {
+      const features = polygons.map((polygon) => ({
+        ...polygon,
+        id: String(Date.now())
+      }))
 
-    draw.current.add({
-      features: features,
-      type: 'FeatureCollection'
-    })
-    setFeatures(
-      Object.fromEntries(features.map((polygon) => [polygon.id, polygon]))
-    )
-  }, [])
+      draw.current.add({
+        features: features,
+        type: 'FeatureCollection'
+      })
+      setFeatures((prev) =>
+        Object.assign(
+          mergeWithCurrent ? { ...prev } : {},
+          Object.fromEntries(features.map((polygon) => [polygon.id, polygon]))
+        )
+      )
+    },
+    []
+  )
 
   const onDeleteMarker = useCallback(() => {
     setMarker((prev) => {

@@ -5,7 +5,11 @@ import { isNotNull, isNull } from '../../lib/index'
 import { Maybe } from '../../types'
 import { DumpButton } from './DumpButton'
 
-export function DumpButtonWrapper() {
+interface DumpButtonWrapperProps {
+  onClick: () => void
+}
+
+export function DumpButtonWrapper(props: DumpButtonWrapperProps) {
   const [mapLibreControls, setMapLibreContorls] =
     useState<Maybe<HTMLDivElement>>(null)
 
@@ -20,5 +24,8 @@ export function DumpButtonWrapper() {
     return null
   }
 
-  return ReactDOM.createPortal(<DumpButton />, mapLibreControls)
+  return ReactDOM.createPortal(
+    <DumpButton onClick={props.onClick} />,
+    mapLibreControls
+  )
 }

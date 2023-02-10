@@ -1,4 +1,5 @@
 import bbox from '@turf/bbox'
+import bboxPolygon from '@turf/bbox-polygon'
 import maplibre from 'maplibre-gl'
 import React, { Fragment, useCallback, useRef, useState } from 'react'
 import MapGL, { MapRef, NavigationControl } from 'react-map-gl'
@@ -7,7 +8,7 @@ import { useDrawer } from './hooks/useDrawer'
 import { useMapMouseEvent } from './hooks/useMapMouseEvent'
 import { serveFromBase } from './lib/asset'
 import { CENTER_OF_EUROPE, getMapPadding } from './lib/constants'
-import { isNotNull } from './lib/index'
+import { isNotNull, isNotUndefined } from './lib/index'
 import { BBox, DrawnPolygon, GeoPolygon, HexCollection, Maybe } from './types'
 import { DrawControl } from './views/map/DrawControl'
 import { DumpButtonWrapper } from './views/map/DumpButtonWrappers'
@@ -56,6 +57,22 @@ export function App() {
     [onPopulatePolygons, handleZoomToPolygon]
   )
 
+  const onMapDump = useCallback(() => {
+    const bounds = mapRef.current?.getBounds()
+    if (isNotUndefined(bounds)) {
+      const polygon = bboxPolygon(
+        [
+          bounds.getWest(),
+          bounds.getSouth(),
+          bounds.getEast(),
+          bounds.getNorth()
+        ],
+        { id: Date.now() }
+      ) as GeoPolygon
+      onPopulatePolygons([polygon], true)
+    }
+  }, [onPopulatePolygons])
+
   const polygons = Object.values(features)
 
   return (
@@ -81,7 +98,7 @@ export function App() {
           onMouseMove={handleMouseMove}
           onMouseLeave={handleMouseLeave}
         >
-          <DumpButtonWrapper />
+          <DumpButtonWrapper onClick={onMapDump} />
           <NavigationControl showCompass={false} position="top-right" />
           <DrawControl
             draw={draw}
