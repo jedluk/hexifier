@@ -32,6 +32,14 @@ export function isMobileScreen(): boolean {
   return matchMedia('(max-width: 768px)').matches
 }
 
+export function getSidebarRatio(): number {
+  return (
+    (isMobileScreen()
+      ? MEDIUM_SCREEN_MAP_PADDING.left
+      : MEDIUM_SCREEN_MAP_PADDING.left) / window.innerWidth
+  )
+}
+
 export function getMapPadding(): MapPadding {
   return isMobileScreen() ? SMALL_SCREEN_MAP_PADDING : MEDIUM_SCREEN_MAP_PADDING
 }
