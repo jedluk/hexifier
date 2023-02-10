@@ -41,7 +41,7 @@ export function App() {
     interactiveLayers,
     handleMouseMove,
     handleMouseLeave
-  } = useMapMouseEvent(mapRef.current, hexCollection)
+  } = useMapMouseEvent(mapRef.current, hexCollection, features)
 
   const handleZoomToPolygon = useCallback(
     (
