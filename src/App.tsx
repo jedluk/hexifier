@@ -25,7 +25,7 @@ import { Panel } from './views/panel/Panel'
 
 export function App() {
   const mapRef = useRef<Maybe<MapRef>>(null)
-  const [isPanelOpen, , , togglePanel] = useBoolean(false)
+  const [isPanelOpen, , , togglePanel] = useBoolean(true)
   const [hexCollection, setHexCollection] = useState<Maybe<HexCollection>>(null)
 
   const {
@@ -69,7 +69,9 @@ export function App() {
       const polygon = bboxPolygon(
         [
           bounds.getWest() +
-            getSidebarRatio() * (bounds.getEast() - bounds.getWest()),
+            Number(isPanelOpen) *
+              getSidebarRatio() *
+              (bounds.getEast() - bounds.getWest()),
           bounds.getSouth(),
           bounds.getEast(),
           bounds.getNorth()
@@ -78,7 +80,7 @@ export function App() {
       )
       onPopulatePolygons([polygon as GeoPolygon], true)
     }
-  }, [onPopulatePolygons])
+  }, [onPopulatePolygons, isPanelOpen])
 
   const polygons = Object.values(features)
 

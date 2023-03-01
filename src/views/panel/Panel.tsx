@@ -25,6 +25,7 @@ export function Panel(props: PanelProps) {
   const [isMobileMenuHidden, , , toggleMobileMenu] = useBoolean(true)
 
   const {
+    isOpen,
     polygons,
     onAddPolygons,
     onZoomToPolygon,
@@ -35,7 +36,12 @@ export function Panel(props: PanelProps) {
   const menuClass = isMobileMenuHidden ? 'hidden md:block' : ''
 
   return (
-    <aside className="absolute top-0 left-0 w-full md:w-96 z-10 border-r-1 border-neutral-200 md:h-full p-2 bg-white flex flex-col">
+    <aside
+      className={joinClassNames(
+        'absolute top-0 left-0 w-full md:w-96 z-10 border-r-1 border-neutral-200 md:h-full p-2 bg-white flex flex-col ease-in duration-300',
+        !isOpen && '-translate-x-96'
+      )}
+    >
       <h1 className="flex justify-between items-center">
         <Logo width={256} height={50} />
         <Hamburger className="md:hidden" onClick={toggleMobileMenu} />
@@ -74,10 +80,7 @@ export function Panel(props: PanelProps) {
           ))}
         </div>
       </RenderWhen>
-      <Drawer
-        chevron={props.isOpen ? 'right' : 'left'}
-        onClick={props.onToggle}
-      />
+      <Drawer chevron={isOpen ? 'left' : 'right'} onClick={props.onToggle} />
     </aside>
   )
 }
