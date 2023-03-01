@@ -3,6 +3,7 @@ import bboxPolygon from '@turf/bbox-polygon'
 import maplibre from 'maplibre-gl'
 import React, { Fragment, useCallback, useRef, useState } from 'react'
 import MapGL, { MapRef, NavigationControl } from 'react-map-gl'
+import { useBoolean } from 'use-boolean'
 
 import { useDrawer } from './hooks/useDrawer'
 import { useMapMouseEvent } from './hooks/useMapMouseEvent'
@@ -24,6 +25,7 @@ import { Panel } from './views/panel/Panel'
 
 export function App() {
   const mapRef = useRef<Maybe<MapRef>>(null)
+  const [isPanelOpen, , , togglePanel] = useBoolean(false)
   const [hexCollection, setHexCollection] = useState<Maybe<HexCollection>>(null)
 
   const {
@@ -83,11 +85,13 @@ export function App() {
   return (
     <Fragment>
       <Panel
+        isOpen={isPanelOpen}
         polygons={polygons}
         onAddHexCollection={setHexCollection}
         onDeletePolygon={onDeletePolygon}
         onAddPolygons={handleAddPolygons}
         onZoomToPolygon={handleZoomToPolygon}
+        onToggle={togglePanel}
       />
       <main className="relative w-full h-full">
         <MapGL

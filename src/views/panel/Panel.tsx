@@ -12,11 +12,13 @@ import { PolygonDetails } from './PolygonDetails'
 import { Upload } from './Upload'
 
 interface PanelProps {
+  isOpen: boolean
   polygons: DrawnPolygon[]
   onAddPolygons: (polygons: GeoPolygon[]) => void
   onAddHexCollection: (collection: Maybe<HexCollection>) => void
   onZoomToPolygon: (polygon: DrawnPolygon) => void
   onDeletePolygon: (polygon: DrawnPolygon) => void
+  onToggle: () => void
 }
 
 export function Panel(props: PanelProps) {
@@ -72,7 +74,10 @@ export function Panel(props: PanelProps) {
           ))}
         </div>
       </RenderWhen>
-      <Drawer />
+      <Drawer
+        chevron={props.isOpen ? 'right' : 'left'}
+        onClick={props.onToggle}
+      />
     </aside>
   )
 }
