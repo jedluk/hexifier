@@ -7,6 +7,7 @@ import { Splitter } from '../../components/splitter/Splitter'
 import { Logo } from '../../components/svg'
 import { isEmpty, isNotEmpty, joinClassNames } from '../../lib'
 import { DrawnPolygon, GeoPolygon, HexCollection, Maybe } from '../../types'
+import { Drawer } from './Drawer'
 import { PolygonDetails } from './PolygonDetails'
 import { Upload } from './Upload'
 
@@ -32,7 +33,7 @@ export function Panel(props: PanelProps) {
   const menuClass = isMobileMenuHidden ? 'hidden md:block' : ''
 
   return (
-    <aside className="absolute top-0 left-0 w-full md:w-96 z-10 border-r-2 border-neutral-200 md:h-full p-2 bg-white flex flex-col">
+    <aside className="absolute top-0 left-0 w-full md:w-96 z-10 border-r-1 border-neutral-200 md:h-full p-2 bg-white flex flex-col">
       <h1 className="flex justify-between items-center">
         <Logo width={256} height={50} />
         <Hamburger className="md:hidden" onClick={toggleMobileMenu} />
@@ -71,6 +72,7 @@ export function Panel(props: PanelProps) {
           ))}
         </div>
       </RenderWhen>
+      <Drawer />
     </aside>
   )
 }
