@@ -11,10 +11,8 @@ const iconStyle: React.CSSProperties = {
 
 export function DumpButton(props: DumpButtonProps) {
   return (
-    <div className="maplibregl-ctrl maplibregl-ctrl-group">
-      <button onClick={props.onClick} title="Dump current view">
-        <span className="maplibregl-ctrl-icon" style={iconStyle} />
-      </button>
-    </div>
+    <button onClick={props.onClick} title="Dump current view">
+      <span className="maplibregl-ctrl-icon" style={iconStyle} />
+    </button>
   )
 }
