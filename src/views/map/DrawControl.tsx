@@ -23,7 +23,8 @@ export function DrawControl(props: DrawControlProps) {
       map.off('draw.create', props.onCreate)
       // @ts-expect-error type added by mapbox-gl-draw
       map.off('draw.update', props.onUpdate)
-    }
+    },
+    { position: 'bottom-right' }
   )
 
   return null

@@ -28,4 +28,17 @@ export namespace Nominatim {
     addresstype: string
     geojson: Point | LineString | Polygon | MultiPolygon
   }
+
+  export interface OSMElementGeoJSON {
+    type: 'Feature'
+    properties: Omit<OSMElement, 'geojson'>
+    bbox: [number, number, number, number]
+    geometry: Point | Polygon | MultiPolygon
+  }
+
+  export interface GeoJSON {
+    features: OSMElementGeoJSON[]
+    licence: 'Data © OpenStreetMap contributors, ODbL 1.0. https://osm.org/copyright'
+    type: 'FeatureCollection'
+  }
 }
