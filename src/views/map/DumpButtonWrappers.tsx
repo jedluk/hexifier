@@ -10,22 +10,23 @@ interface DumpButtonWrapperProps {
 }
 
 export function DumpButtonWrapper(props: DumpButtonWrapperProps) {
-  const [mapLibreControls, setMapLibreContorls] =
-    useState<Maybe<HTMLDivElement>>(null)
+  const [container, setContainer] = useState<Maybe<HTMLDivElement>>(null)
 
   useEffect(() => {
-    const group = document.querySelector('.maplibregl-ctrl-top-right')
+    const group = document.querySelector('.maplibregl-ctrl-bottom-right')
     if (isNotNull(group)) {
-      setMapLibreContorls(group as HTMLDivElement)
+      const node = document.createElement('div')
+      group.insertBefore(node, group.firstChild)
+      setContainer(node)
     }
   }, [])
 
-  if (isNull(mapLibreControls)) {
+  if (isNull(container)) {
     return null
   }
 
   return ReactDOM.createPortal(
     <DumpButton onClick={props.onClick} />,
-    mapLibreControls
+    container
   )
 }

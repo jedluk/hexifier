@@ -17,6 +17,7 @@ import { isNotNull, isNotUndefined } from './lib/index'
 import { BBox, DrawnPolygon, GeoPolygon, HexCollection, Maybe } from './types'
 import { DrawControl } from './views/map/DrawControl'
 import { DumpButtonWrapper } from './views/map/DumpButtonWrappers'
+import { Geocoder } from './views/map/Geocoder'
 import { GeocoderBubble } from './views/map/GeocoderBubble'
 import { HexArea } from './views/map/HexArea'
 import { HexMarker } from './views/map/HexMarker'
@@ -109,8 +110,9 @@ export function App() {
           onMouseMove={handleMouseMove}
           onMouseLeave={handleMouseLeave}
         >
+          <Geocoder />
           <DumpButtonWrapper onClick={onMapDump} />
-          <NavigationControl showCompass={false} position="top-right" />
+          <NavigationControl showCompass={false} position="bottom-right" />
           <DrawControl
             draw={draw}
             onCreate={onMapUpdate}
