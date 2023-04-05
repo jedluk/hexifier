@@ -4,60 +4,38 @@ import '@maplibre/maplibre-gl-geocoder/dist/maplibre-gl-geocoder.css'
 // @ts-ignore no type defs
 import MaplibreGeocoder from '@maplibre/maplibre-gl-geocoder'
 import maplibregl from 'maplibre-gl'
-import { useControl } from 'react-map-gl'
+import { IControl, useControl } from 'react-map-gl'
 
+import { geocode } from '../../apis/nominatim'
+import { toGeocoderOption } from '../../lib/feature'
 import { Nominatim } from '../../types/nominatim'
 
-const geocoder_api = {
-  forwardGeocode: async (config: { query: string }) => {
-    const features: Record<string, unknown>[] = []
-
-    try {
-      const searchParams = new URLSearchParams([
-        ['q', config.query],
-        ['format', 'geojson'],
-        ['adressdetails', '1'],
-        ['polygon_geojson', '1']
-      ])
-      const request = `https://nominatim.openstreetmap.org/search?${searchParams.toString()}`
-      const response = await fetch(request)
-      const geojson = (await response.json()) as Nominatim.GeoJSON
-
-      for (const feature of geojson.features) {
-        const center = [
-          feature.bbox[0] + (feature.bbox[2] - feature.bbox[0]) / 2,
-          feature.bbox[1] + (feature.bbox[3] - feature.bbox[1]) / 2
-        ]
-        const point = {
-          center: center,
-          geometry: {
-            coordinates: center,
-            type: 'Point'
-          },
-          place_name: feature.properties.display_name,
-          place_type: ['place'],
-          properties: feature.properties,
-          text: feature.properties.display_name,
-          type: 'Feature'
-        }
-        features.push(point)
-      }
-    } catch (e) {
-      console.error(`Failed to forwardGeocode with error:`)
-    }
-
-    return {
-      features: features
-    }
-  }
-}
-
 export function Geocoder() {
-  useControl<MaplibreGeocoder>(() => {
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-return
-    return new MaplibreGeocoder(geocoder_api, {
-      maplibregl: maplibregl
+  useControl(() => {
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-return, @typescript-eslint/no-unsafe-assignment
+    const ctrl = new MaplibreGeocoder(
+      {
+        forwardGeocode: async (config: { query: string; limit: number }) => {
+          const geojson = await geocode(config.query, config.limit)
+          const features = geojson.features.map(toGeocoderOption)
+          return { features }
+        }
+      },
+      {
+        enableEventLogging: false,
+        maplibregl: maplibregl,
+        marker: false,
+        popup: false,
+        showResultMarkers: true
+      }
+    )
+
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-call
+    ctrl.on('result', (args: { result: Nominatim.OSMElementGeoJSON }) => {
+      console.log(args.result)
     })
+
+    return ctrl as IControl
   })
 
   return null
