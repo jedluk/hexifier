@@ -8,16 +8,15 @@ import { IControl, useControl } from 'react-map-gl'
 
 import { geocode } from '../../apis/nominatim'
 import { toGeocoderOption } from '../../lib/feature'
-import { Nominatim } from '../../types/nominatim'
 
 export function Geocoder() {
   useControl(() => {
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-return, @typescript-eslint/no-unsafe-assignment
-    const ctrl = new MaplibreGeocoder(
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-call
+    return new MaplibreGeocoder(
       {
         forwardGeocode: async (config: { query: string; limit: number }) => {
-          const geojson = await geocode(config.query, config.limit)
-          const features = geojson.features.map(toGeocoderOption)
+          const collection = await geocode(config.query, config.limit)
+          const features = collection.features.map(toGeocoderOption)
           return { features }
         }
       },
@@ -28,14 +27,7 @@ export function Geocoder() {
         popup: false,
         showResultMarkers: true
       }
-    )
-
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-call
-    ctrl.on('result', (args: { result: Nominatim.OSMElementGeoJSON }) => {
-      console.log(args.result)
-    })
-
-    return ctrl as IControl
+    ) as IControl
   })
 
   return null
