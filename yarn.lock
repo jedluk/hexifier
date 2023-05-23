@@ -2882,10 +2882,10 @@ magic-string@^0.27.0:
   dependencies:
     "@jridgewell/sourcemap-codec" "^1.4.13"
 
-map-gl-compass-pro@^0.0.6:
-  version "0.0.6"
-  resolved "https://registry.yarnpkg.com/map-gl-compass-pro/-/map-gl-compass-pro-0.0.6.tgz#e936b1c05a621f401c9009c5bbf578a621addc28"
-  integrity sha512-+rPH9T+6vAg7sc5hr+vzPmT0rNhWPU2D2j2jKuLBlzRmWwBTtL2LDq+irSfBO14QwGziOVreVjUIPG8ecYdgUQ==
+map-gl-compass-pro@^0.0.9:
+  version "0.0.9"
+  resolved "https://registry.yarnpkg.com/map-gl-compass-pro/-/map-gl-compass-pro-0.0.9.tgz#1a457e4d812e6123d59259d4a6294a86c7a4a81d"
+  integrity sha512-PXlvObJkfEdNfA247mSkw3H9B/D5tBitbp0KjvN7wNFjJVgQiEEAzIo76+IYuOze8X4TsLU80KfpFjkdl9hKLA==
 
 mapbox-gl@^2.12.0:
   version "2.12.0"
