@@ -24,13 +24,20 @@
     }
 }
 
-main[data-panel="true"] .maplibre-compass {
-    left: calc(24rem + 10px);
+
+.maplibre-compass {
+    bottom: 10px;
+    position: absolute;
     transition: all;
     transition-timing-function: cubic-bezier(0.4, 0, 1, 1);
     transition-duration: 300ms;
 }
 
-main[data-panel="false"] .maplibre-compass {
+main[data-panel-collapsed="false"] .maplibre-compass {
+    left: calc(24rem + 10px);
+
+}
+
+main[data-panel-collapsed="true"] .maplibre-compass {
     left: 10px;
 }

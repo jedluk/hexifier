@@ -97,7 +97,10 @@ export function App() {
         onZoomToPolygon={handleZoomToPolygon}
         onToggle={togglePanel}
       />
-      <main className="relative w-full h-full" data-panel={isPanelOpen}>
+      <main
+        className="relative w-full h-full"
+        data-panel-collapsed={!isPanelOpen}
+      >
         <MapGL
           ref={mapRef}
           mapLib={maplibre}
