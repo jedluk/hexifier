@@ -1,5 +1,6 @@
 import bbox from '@turf/bbox'
 import bboxPolygon from '@turf/bbox-polygon'
+import Compass from 'map-gl-compass-pro'
 import maplibre from 'maplibre-gl'
 import React, { Fragment, useCallback, useRef, useState } from 'react'
 import MapGL, { MapRef, NavigationControl } from 'react-map-gl'
@@ -102,7 +103,7 @@ export function App() {
           mapLib={maplibre}
           minZoom={2}
           maxZoom={19}
-          dragRotate={false}
+          // dragRotate={true}
           mapStyle={serveFromBase('mapStyle.json')}
           padding={getMapPadding()}
           initialViewState={CENTER_OF_EUROPE}
@@ -129,6 +130,7 @@ export function App() {
             />
           )}
           <Names polygons={polygons} />
+          <Compass size="sm" wrapperClass="maplibre-compass" />
         </MapGL>
       </main>
     </Fragment>
