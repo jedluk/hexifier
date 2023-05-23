@@ -97,13 +97,12 @@ export function App() {
         onZoomToPolygon={handleZoomToPolygon}
         onToggle={togglePanel}
       />
-      <main className="relative w-full h-full">
+      <main className="relative w-full h-full" data-panel={isPanelOpen}>
         <MapGL
           ref={mapRef}
           mapLib={maplibre}
           minZoom={2}
           maxZoom={19}
-          // dragRotate={true}
           mapStyle={serveFromBase('mapStyle.json')}
           padding={getMapPadding()}
           initialViewState={CENTER_OF_EUROPE}
