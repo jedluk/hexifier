@@ -33,11 +33,11 @@
     transition-duration: 300ms;
 }
 
-main[data-panel="true"] .maplibre-compass {
+main[data-panel-collapsed="false"] .maplibre-compass {
     left: calc(24rem + 10px);
 
 }
 
-main[data-panel="false"] .maplibre-compass {
+main[data-panel-collapsed="true"] .maplibre-compass {
     left: 10px;
 }
