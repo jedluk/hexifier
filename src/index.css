@@ -25,7 +25,7 @@
 }
 
 
-.maplibre-compass {
+.compass-pro-wrapper {
     bottom: 10px;
     position: absolute;
     transition: all;
@@ -33,17 +33,17 @@
     transition-duration: 300ms;
 }
 
-main[data-panel-collapsed="false"] .maplibre-compass {
+main[data-panel-collapsed="false"] .compass-pro-wrapper {
     left: calc(24rem + 10px);
 
 }
 
-main[data-panel-collapsed="true"] .maplibre-compass {
+main[data-panel-collapsed="true"] .compass-pro-wrapper {
     left: 10px;
 }
 
 @media only screen and (max-width: 768px) {
-    main[data-panel-collapsed] .maplibre-compass {
+    main[data-panel-collapsed] .compass-pro-wrapper {
         left: 10px;
     }
 }
