@@ -132,7 +132,7 @@ export function App() {
             />
           )}
           <Names polygons={polygons} />
-          <Compass visualizePitch size="sm" wrapperClass="maplibre-compass" />
+          <Compass visualizePitch size="md" />
         </MapGL>
       </main>
     </Fragment>

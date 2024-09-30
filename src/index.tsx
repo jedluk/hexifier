@@ -1,5 +1,6 @@
 import './index.css'
 import 'maplibre-gl/dist/maplibre-gl.css'
+import 'map-gl-compass-pro/dist/style.css'
 import '@mapbox/mapbox-gl-draw/dist/mapbox-gl-draw.css'
 
 import React from 'react'
