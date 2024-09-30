@@ -2882,10 +2882,12 @@ magic-string@^0.27.0:
   dependencies:
     "@jridgewell/sourcemap-codec" "^1.4.13"
 
-map-gl-compass-pro@^0.1.2:
-  version "0.1.2"
-  resolved "https://registry.yarnpkg.com/map-gl-compass-pro/-/map-gl-compass-pro-0.1.2.tgz#08a692e9de65eb31f8174b943a94c860125c00b6"
-  integrity sha512-5xhQf7AUpD2vXleP//+N56Tx0FH6aMY5MvaVzEaVuyVigqaURNwSUoCzPH1bF+5ptmc+Ve+oH26Dq5BdOdsy+w==
+map-gl-compass-pro@0.4.0:
+  version "0.4.0"
+  resolved "https://registry.yarnpkg.com/map-gl-compass-pro/-/map-gl-compass-pro-0.4.0.tgz#5c6cd8184610d4a910c08c379c6029547d6dd5ee"
+  integrity sha512-cyBh6qQKCDwxe+h+PVcLTwehLqwRprhCdr2QkAcMXmPM9maqm1no3NGp+DXrsvmvkeTDr7jSlJyLHs+sY4Fayg==
+  dependencies:
+    maplibre-compass-pro "0.4.0"
 
 mapbox-gl@^2.12.0:
   version "2.12.0"
@@ -2913,6 +2915,11 @@ mapbox-gl@^2.12.0:
     supercluster "^7.1.5"
     tinyqueue "^2.0.3"
     vt-pbf "^3.1.3"
+
+maplibre-compass-pro@0.4.0:
+  version "0.4.0"
+  resolved "https://registry.yarnpkg.com/maplibre-compass-pro/-/maplibre-compass-pro-0.4.0.tgz#82e779ec4f3151653ad64af807cf8b3e9cc18538"
+  integrity sha512-0pWypYzuoX0RNkADf2lZrc4IfX9IAbw1yjIyqjK21YI0T9oU97bRwja8wQrhbHMkrwiGZCDnrjqCDGlbaTnkvA==
 
 maplibre-gl@^2.4.0:
   version "2.4.0"
