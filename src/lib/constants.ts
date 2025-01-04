@@ -33,12 +33,10 @@ export function isMobileScreen(): boolean {
 }
 
 export function getSidebarRatio(isPanelOpen: boolean): number {
-  if (isMobileScreen()) {
+  if (isMobileScreen() || !isPanelOpen) {
     return 0
   }
-  return (
-    (Number(isPanelOpen) / window.innerWidth) * MEDIUM_SCREEN_MAP_PADDING.left
-  )
+  return MEDIUM_SCREEN_MAP_PADDING.left / window.innerWidth
 }
 
 export function getTopBarRatio(): number {
