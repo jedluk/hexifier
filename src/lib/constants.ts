@@ -14,7 +14,7 @@ const SMALL_SCREEN_MAP_PADDING = {
   bottom: 10,
   left: 10,
   right: 10,
-  top: 100
+  top: 50
 } as const
 
 const MEDIUM_SCREEN_MAP_PADDING = {
@@ -32,12 +32,20 @@ export function isMobileScreen(): boolean {
   return matchMedia('(max-width: 768px)').matches
 }
 
-export function getSidebarRatio(): number {
+export function getSidebarRatio(isPanelOpen: boolean): number {
+  if (isMobileScreen()) {
+    return 0
+  }
   return (
-    (isMobileScreen()
-      ? MEDIUM_SCREEN_MAP_PADDING.left
-      : MEDIUM_SCREEN_MAP_PADDING.left) / window.innerWidth
+    (Number(isPanelOpen) / window.innerWidth) * MEDIUM_SCREEN_MAP_PADDING.left
   )
+}
+
+export function getTopBarRatio(): number {
+  if (!isMobileScreen()) {
+    return 0
+  }
+  return SMALL_SCREEN_MAP_PADDING.top / window.innerHeight
 }
 
 export function getMapPadding(): MapPadding {
