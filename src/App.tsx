@@ -12,7 +12,8 @@ import { serveFromBase } from './lib/asset'
 import {
   CENTER_OF_EUROPE,
   getMapPadding,
-  getSidebarRatio
+  getSidebarRatio,
+  getTopBarRatio
 } from './lib/constants'
 import { isNotNull, isNotUndefined } from './lib/index'
 import { BBox, DrawnPolygon, GeoPolygon, HexCollection, Maybe } from './types'
@@ -71,12 +72,12 @@ export function App() {
       const polygon = bboxPolygon(
         [
           bounds.getWest() +
-            Number(isPanelOpen) *
-              getSidebarRatio() *
+            getSidebarRatio(isPanelOpen) *
               (bounds.getEast() - bounds.getWest()),
           bounds.getSouth(),
           bounds.getEast(),
-          bounds.getNorth()
+          bounds.getNorth() -
+            getTopBarRatio() * (bounds.getNorth() - bounds.getSouth())
         ],
         { id: String(Date.now()) }
       )
